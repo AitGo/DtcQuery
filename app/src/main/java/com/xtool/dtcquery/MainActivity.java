@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         });
 
 
+
                 Subscriber<List<DtcCustom>> subscriber = new Subscriber<List<DtcCustom>>() {
 
                     @Override
@@ -142,30 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 };
 
                 HttpMethods.getInstance().getDtcCustom( HttpMethods.getInstance().(dtc, "queryDtcByDcodeJson.action"),subscriber);
-
-//                Subscriber<List<DtcCustom>> subscriber = new Subscriber<List<DtcCustom>>() {
-//
-//                    @Override
-//                    public void onCompleted() {
-//                        Log.e(TAG, "onCompleted");
-//                    }
-//
-//                    @Override
-//                        Log.e(TAG, "onError:");
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<DtcCustom> dtcCustoms) {
-//                        Log.e(TAG, "onNext");
-//                        for (DtcCustom dtcCustom : dtcCustoms) {
-//                            Log.e(TAG, dtcCustom.getDname());
-//                        }
-//                    }
-//
-//                };
-//
-//                HttpMethods.getInstance().getDtcCustom( HttpMethods.getInstance().(dtc, "queryDtcByDcodeJson.action"),subscriber);
                 break;
         }
 
