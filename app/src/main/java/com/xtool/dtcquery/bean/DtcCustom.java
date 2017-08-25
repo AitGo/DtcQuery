@@ -6,20 +6,20 @@ package com.xtool.dtcquery.bean;
 
 public class DtcCustom extends Dtc {
 
-    private String aesKey;
+    private String key;
 
-    public String getAesKey() {
-        return aesKey;
+    public String getKey() {
+        return key;
     }
 
-    public void setAesKey(String aesKey) {
-        this.aesKey = aesKey;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     @Override
     public String toString() {
         return "DtcCustom{" +
-                "aesKey='" + aesKey + '\'' +
+                "key='" + key + '\'' +
                 '}';
     }
 }

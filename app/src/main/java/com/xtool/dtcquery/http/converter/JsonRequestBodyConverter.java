@@ -51,7 +51,7 @@ public class JsonRequestBodyConverter<T> implements Converter<T, RequestBody>{
             String aesDcode = AESUtil.encrypt(dtcCustom.getDcode(),uuid);
             RSAPublicKey publicKey = RSAUtils.getPublicKeyFromAsset(context);
             String aesKey = RSAUtils.encryptByPublicKey(uuid,publicKey);
-            dtcCustom.setAesKey(aesKey);
+            dtcCustom.setKey(aesKey);
             dtcCustom.setDcode(aesDcode);
             Log.e(TAG,"uuid: " + uuid);
             Log.e(TAG,"RSA加密key: " + aesKey);
