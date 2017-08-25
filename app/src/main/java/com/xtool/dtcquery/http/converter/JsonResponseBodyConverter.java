@@ -1,12 +1,9 @@
-package com.xtool.dtcquery.converter;
-
-import android.content.Context;
+package com.xtool.dtcquery.http.converter;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.xtool.dtcquery.bean.DtcCustom;
-import com.xtool.dtcquery.utils.GsonUtils;
 
 import java.io.IOException;
 import java.util.List;

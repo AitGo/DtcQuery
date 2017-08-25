@@ -1,10 +1,6 @@
 package com.xtool.dtcquery.http;
 
-import com.xtool.dtcquery.bean.DtcCustom;
-import com.xtool.dtcquery.converter.JsonConverterFactory;
-import com.xtool.dtcquery.service.PostActivation;
-
-import java.util.List;
+import com.xtool.dtcquery.http.service.PostActivation;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

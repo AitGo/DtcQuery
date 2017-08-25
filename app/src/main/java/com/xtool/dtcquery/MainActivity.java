@@ -1,6 +1,5 @@
 package com.xtool.dtcquery;
 
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,39 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
-import com.xtool.dtcquery.bean.Dtc;
 import com.xtool.dtcquery.bean.DtcCustom;
-import com.xtool.dtcquery.converter.JsonConverterFactory;
-import com.xtool.dtcquery.converter.JsonRequestBodyConverter;
-import com.xtool.dtcquery.http.HttpMethods;
-import com.xtool.dtcquery.service.PostActivation;
-import com.xtool.dtcquery.utils.RSAUtils;
+import com.xtool.dtcquery.http.converter.JsonConverterFactory;
+import com.xtool.dtcquery.http.service.PostActivation;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.Path;
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

@@ -1,11 +1,9 @@
-package com.xtool.dtcquery.converter;
+package com.xtool.dtcquery.http.converter;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.xtool.dtcquery.bean.DtcCustom;
 import com.xtool.dtcquery.utils.AESUtil;
@@ -14,9 +12,7 @@ import com.xtool.dtcquery.utils.RandomUtils;
 
 import java.io.IOException;
 import java.security.interfaces.RSAPublicKey;
-import java.util.UUID;
 
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Converter;
 
