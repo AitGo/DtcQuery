@@ -9,8 +9,11 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.xtool.dtcquery.bean.DtcCustom;
+import com.xtool.dtcquery.bean.PublicKey;
+import com.xtool.dtcquery.http.ServiceFactory;
 import com.xtool.dtcquery.http.converter.JsonConverterFactory;
 import com.xtool.dtcquery.http.service.PostActivation;
+import com.xtool.dtcquery.utils.RSAUtils;
 
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-
+        PublicKey.rsaPublicKey = RSAUtils.getPublicKeyFromAsset(this);
     }
 
 
@@ -53,21 +56,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dtc.setDcode(dcode);
                 Gson gson = new Gson();
                 String json = gson.toJson(dtc);
-                OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                        .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).build();
                 Log.d(TAG, "Json: " + json);
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(PostActivation.BSERURL)
-                        .client(okHttpClient)
-                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                            .addConverterFactory( GsonConverterFactory.create())
-                        .addConverterFactory(JsonConverterFactory.create(this))
-                        .build();
 
-
-                PostActivation postActivation = retrofit.create(PostActivation.class);
-
-                postActivation.postActivation(dtc, "queryDtcByDcodeJson.action")
+                ServiceFactory.getInstance().createService(PostActivation.class)
+                        .postActivation(dtc,"queryDtcByDcodeJson.action")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Subscriber<List<DtcCustom>>() {
@@ -91,32 +83,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
 
-
-
-//                Subscriber<List<DtcCustom>> subscriber = new Subscriber<List<DtcCustom>>() {
-//
-//                    @Override
-//                    public void onCompleted() {
-//                        Log.e(TAG, "onCompleted");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Log.e(TAG, "onError:");
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<DtcCustom> dtcCustoms) {
-//                        Log.e(TAG, "onNext");
-//                        for (DtcCustom dtcCustom : dtcCustoms) {
-//                            Log.e(TAG, dtcCustom.getDname());
-//                        }
-//                    }
-//
-//                };
-//
-//                HttpMethods.getInstance().getDtcCustom( ,subscriber);
                 break;
         }
 

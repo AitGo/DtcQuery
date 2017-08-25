@@ -16,7 +16,7 @@ import rx.Observable;
 
 public interface PostActivation {
 
-    String BSERURL = "http://192.168.137.1:8080/DtcQuery/";
+    String BASE_URL = "http://192.168.137.1:8080/DtcQuery/";
 
     @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
     @POST("app/{action}")

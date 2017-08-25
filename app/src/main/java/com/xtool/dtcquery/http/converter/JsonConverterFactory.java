@@ -22,21 +22,19 @@ import retrofit2.Retrofit;
 public class JsonConverterFactory extends Converter.Factory{
 
     private final Gson gson;
-    private Context context;
 
-    private JsonConverterFactory(Gson gson,Context context) {
+    private JsonConverterFactory(Gson gson) {
         if (gson == null) throw new NullPointerException("gson == null");
         this.gson = gson;
-        this.context = context;
     }
 
-    public static JsonConverterFactory create(Context context) {
+    public static JsonConverterFactory create() {
 
-        return create(new GsonBuilder().disableHtmlEscaping().create(),context);
+        return create(new GsonBuilder().disableHtmlEscaping().create());
     }
 
-    public static JsonConverterFactory create(Gson gson,Context context) {
-        return new JsonConverterFactory(gson,context);
+    public static JsonConverterFactory create(Gson gson) {
+        return new JsonConverterFactory(gson);
     }
 
     @Override
@@ -48,6 +46,6 @@ public class JsonConverterFactory extends Converter.Factory{
     @Override
     public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {
         TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(type));
-        return new JsonRequestBodyConverter<>(gson, adapter,context); //请求
+        return new JsonRequestBodyConverter<>(gson, adapter); //请求
     }
 }

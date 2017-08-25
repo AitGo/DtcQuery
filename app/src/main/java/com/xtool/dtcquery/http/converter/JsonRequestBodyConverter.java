@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.xtool.dtcquery.bean.DtcCustom;
+import com.xtool.dtcquery.bean.PublicKey;
 import com.xtool.dtcquery.utils.AESUtil;
 import com.xtool.dtcquery.utils.RSAUtils;
 import com.xtool.dtcquery.utils.RandomUtils;
@@ -29,12 +30,10 @@ public class JsonRequestBodyConverter<T> implements Converter<T, RequestBody>{
 
     private final Gson gson;
     private final TypeAdapter<T> adapter;
-    private Context context;
 
-    JsonRequestBodyConverter(Gson gson, TypeAdapter<T> adapter,Context context) {
+    JsonRequestBodyConverter(Gson gson, TypeAdapter<T> adapter) {
         this.gson = gson;
         this.adapter = adapter;
-        this.context = context;
     }
 
     @Override
@@ -44,12 +43,11 @@ public class JsonRequestBodyConverter<T> implements Converter<T, RequestBody>{
 
             DtcCustom dtcCustom = (DtcCustom) value;
             Log.e(TAG,"加密前: " + dtcCustom.toString());
-
 //            DtcCustom dtcCustom = gson.fromJson(value.toString(), DtcCustom.class);
             String uuid = RandomUtils.getRandomValue(16);
 
             String aesDcode = AESUtil.encrypt(dtcCustom.getDcode(),uuid);
-            RSAPublicKey publicKey = RSAUtils.getPublicKeyFromAsset(context);
+            RSAPublicKey publicKey = PublicKey.rsaPublicKey;
             String aesKey = RSAUtils.encryptByPublicKey(uuid,publicKey);
             dtcCustom.setKey(aesKey);
             dtcCustom.setDcode(aesDcode);
