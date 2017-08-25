@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String dcode = et_dcode.getText().toString();
                 DtcCustom dtc = new DtcCustom();
                 dtc.setDcode(dcode);
-
                 Gson gson = new Gson();
                 String json = gson.toJson(dtc);
                 OkHttpClient okHttpClient = new OkHttpClient.Builder()

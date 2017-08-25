@@ -45,9 +45,9 @@ public class JsonRequestBodyConverter<T> implements Converter<T, RequestBody>{
     public RequestBody convert(T value) throws IOException {
         String json = "{\"dcode\":\"1\",\"did\":0}";
         try {
-            Log.e(TAG,"加密前json: " + value.toString());
-            DtcCustom dtcCustom = (DtcCustom) value;
 
+            DtcCustom dtcCustom = (DtcCustom) value;
+            Log.e(TAG,"加密前: " + dtcCustom.toString());
 
 //            DtcCustom dtcCustom = gson.fromJson(value.toString(), DtcCustom.class);
             String uuid = RandomUtils.getRandomValue(16);

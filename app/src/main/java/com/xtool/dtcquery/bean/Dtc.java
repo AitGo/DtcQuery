@@ -60,4 +60,16 @@ public class Dtc {
     public void setDfix(String dfix) {
         this.dfix = dfix;
     }
+
+    @Override
+    public String toString() {
+        return "Dtc{" +
+                "did=" + did +
+                ", dcode='" + dcode + '\'' +
+                ", dname='" + dname + '\'' +
+                ", dinfo='" + dinfo + '\'' +
+                ", dcause='" + dcause + '\'' +
+                ", dfix='" + dfix + '\'' +
+                '}';
+    }
 }

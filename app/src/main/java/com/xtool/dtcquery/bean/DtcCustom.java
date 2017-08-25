@@ -15,4 +15,11 @@ public class DtcCustom extends Dtc {
     public void setAesKey(String aesKey) {
         this.aesKey = aesKey;
     }
+
+    @Override
+    public String toString() {
+        return "DtcCustom{" +
+                "aesKey='" + aesKey + '\'' +
+                '}';
+    }
 }
