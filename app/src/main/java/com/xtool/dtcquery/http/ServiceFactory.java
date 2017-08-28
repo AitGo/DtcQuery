@@ -1,13 +1,10 @@
 package com.xtool.dtcquery.http;
 
 import com.xtool.dtcquery.http.converter.JsonConverterFactory;
-import com.xtool.dtcquery.utils.FileUtils;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;

@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.xtool.dtcquery.bean.DtcCustom;
 import com.xtool.dtcquery.bean.PublicKey;
 import com.xtool.dtcquery.http.ServiceFactory;
+import com.xtool.dtcquery.http.TransformUtils;
 import com.xtool.dtcquery.http.converter.JsonConverterFactory;
 import com.xtool.dtcquery.http.service.PostActivation;
 import com.xtool.dtcquery.utils.RSAUtils;
@@ -60,8 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 ServiceFactory.getInstance().createService(PostActivation.class)
                         .postActivation(dtc,"queryDtcByDcodeJson.action")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(TransformUtils.<List<DtcCustom>>defaultSchedulers())
                         .subscribe(new Subscriber<List<DtcCustom>>() {
                             @Override
                             public void onCompleted() {
