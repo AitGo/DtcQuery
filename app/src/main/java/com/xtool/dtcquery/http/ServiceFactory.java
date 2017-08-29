@@ -1,5 +1,6 @@
 package com.xtool.dtcquery.http;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.xtool.dtcquery.http.converter.JsonConverterFactory;
 
 import java.lang.reflect.Field;
@@ -7,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
 /**
  * Created by xtool on 2017/8/25.
@@ -42,7 +42,7 @@ public class ServiceFactory {
                 .baseUrl(baseUrl)
                 .client(getOkHttpClient())
                 .addConverterFactory(JsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         return retrofit.create(serviceClass);
     }

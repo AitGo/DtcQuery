@@ -18,10 +18,11 @@ import com.xtool.dtcquery.utils.RSAUtils;
 
 import java.util.List;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subjects.Subject;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.Subject;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -59,27 +60,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 ServiceFactory.getInstance().createService(PostActivation.class)
                         .postActivation(dtc,"queryDtcByDcodeJson.action")
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-                        .compose(TransformUtils.<List<DtcCustom>>defaultSchedulers())
-                        .subscribe(new Subscriber<List<DtcCustom>>() {
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+//                        .compose(TransformUtils.<List<DtcCustom>>defaultSchedulers())
+                        .subscribe(new Subject<List<DtcCustom>>() {
                             @Override
-                            public void onCompleted() {
-                                Log.e(TAG, "onCompleted");
+                            public boolean hasObservers() {
+                                return false;
                             }
 
                             @Override
-                            public void onError(Throwable e) {
+                            public boolean hasThrowable() {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean hasComplete() {
+                                return false;
+                            }
+
+                            @Override
+                            public Throwable getThrowable() {
+                                return null;
+                            }
+
+                            @Override
+                            protected void subscribeActual(Observer<? super List<DtcCustom>> observer) {
+
+                            }
+
+                            @Override
+                            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(@io.reactivex.annotations.NonNull List<DtcCustom> dtcCustoms) {
+                                Log.e(TAG, "onNext");
+                                for (DtcCustom dtcCustom : dtcCustoms) {
+                                    Log.e(TAG, dtcCustom.getDname());
+                                }
+                            }
+
+                            @Override
+                            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
                                 Log.e(TAG, "onError:");
                                 e.printStackTrace();
                             }
 
                             @Override
-                            public void onNext(List<DtcCustom> dtcCustoms) {
-                                Log.e(TAG, "onNext");
-                                for (DtcCustom dtcCustom : dtcCustoms) {
-                                    Log.e(TAG, dtcCustom.getDname());
-                                }
+                            public void onComplete() {
+                                Log.e(TAG, "onCompleted");
                             }
                         });
 
