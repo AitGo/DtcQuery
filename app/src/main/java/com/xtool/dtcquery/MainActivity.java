@@ -1,5 +1,6 @@
 package com.xtool.dtcquery;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,19 +13,16 @@ import com.xtool.dtcquery.bean.DtcCustom;
 import com.xtool.dtcquery.bean.PublicKey;
 import com.xtool.dtcquery.http.ServiceFactory;
 import com.xtool.dtcquery.http.TransformUtils;
-import com.xtool.dtcquery.http.converter.JsonConverterFactory;
 import com.xtool.dtcquery.http.service.PostActivation;
 import com.xtool.dtcquery.utils.RSAUtils;
 
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subjects.Subject;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
