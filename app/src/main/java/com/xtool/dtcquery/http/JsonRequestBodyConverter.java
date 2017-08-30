@@ -1,4 +1,4 @@
-package com.xtool.dtcquery.http.converter;
+package com.xtool.dtcquery.http;
 
 import android.content.Context;
 import android.util.Log;

@@ -1,7 +1,6 @@
 package com.xtool.dtcquery.http;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.xtool.dtcquery.http.converter.JsonConverterFactory;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
