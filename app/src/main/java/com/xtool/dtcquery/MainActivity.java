@@ -53,7 +53,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         RxBus.getInstance().subscribe(String.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
-                Toast.makeText(getApplicationContext(),"1234",Toast.LENGTH_LONG).show();
+                if(o.toString().equals("发送事件1"))
+                    Toast.makeText(getApplicationContext(),"1234",Toast.LENGTH_LONG).show();
             }
         });
     }
