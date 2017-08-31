@@ -8,6 +8,7 @@ import com.google.gson.TypeAdapter;
 import com.xtool.dtcquery.bean.DtcCustom;
 import com.xtool.dtcquery.bean.PublicKey;
 import com.xtool.dtcquery.utils.AESUtil;
+import com.xtool.dtcquery.utils.ContextUtil;
 import com.xtool.dtcquery.utils.RSAUtils;
 import com.xtool.dtcquery.utils.RandomUtils;
 
@@ -47,7 +48,8 @@ public class JsonRequestBodyConverter<T> implements Converter<T, RequestBody>{
             String uuid = RandomUtils.getRandomValue(16);
 
             String aesDcode = AESUtil.encrypt(dtcCustom.getDcode(),uuid);
-            RSAPublicKey publicKey = PublicKey.rsaPublicKey;
+//            RSAPublicKey publicKey = PublicKey.rsaPublicKey;
+            RSAPublicKey publicKey = RSAUtils.getPublicKeyFromAsset(ContextUtil.getInstance());
             String aesKey = RSAUtils.encryptByPublicKey(uuid,publicKey);
             dtcCustom.setKey(aesKey);
             dtcCustom.setDcode(aesDcode);

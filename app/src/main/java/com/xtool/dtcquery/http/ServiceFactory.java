@@ -1,10 +1,14 @@
 package com.xtool.dtcquery.http;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.xtool.dtcquery.utils.ContextUtil;
+import com.xtool.dtcquery.utils.FileUtils;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
@@ -56,8 +60,8 @@ public class ServiceFactory {
         httpClientBuilder.writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         httpClientBuilder.readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         //设置缓存
-//        File httpCacheDirectory = new File(FileUtils.getCacheDir(SolidApplication.getInstance()), "OkHttpCache");
-//        httpClientBuilder.cache(new Cache(httpCacheDirectory, 10 * 1024 * 1024));
+        File httpCacheDirectory = new File(FileUtils.getCacheDir(ContextUtil.getInstance()), "OkHttpCache");
+        httpClientBuilder.cache(new Cache(httpCacheDirectory, 10 * 1024 * 1024));
         return httpClientBuilder.build();
     }
 }
