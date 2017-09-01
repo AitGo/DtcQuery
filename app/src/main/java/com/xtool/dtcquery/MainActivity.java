@@ -13,9 +13,11 @@ import com.xtool.dtcquery.bean.DtcCustom;
 import com.xtool.dtcquery.bean.PublicKey;
 import com.xtool.dtcquery.http.ServiceFactory;
 import com.xtool.dtcquery.http.PostActivation;
+import com.xtool.dtcquery.utils.ContextUtil;
 import com.xtool.dtcquery.utils.RSAUtils;
 import com.xtool.dtcquery.utils.RxBus;
 
+import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,7 +38,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        PublicKey.rsaPublicKey = RSAUtils.getPublicKeyFromAsset(this);
+
     }
 
     @Override

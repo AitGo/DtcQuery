@@ -17,7 +17,7 @@ import retrofit2.http.Path;
 
 public interface PostActivation {
 
-    String BASE_URL = "http://192.168.52.1:8080/DtcQuery/";
+    String BASE_URL = "http://192.168.137.1:8080/DtcQuery/";
 
     @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
     @POST("app/{action}")
