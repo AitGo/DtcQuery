@@ -188,7 +188,7 @@ public class RSAUtils {
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);  
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);  
         Key publicK = keyFactory.generatePublic(x509KeySpec);  
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());  
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.DECRYPT_MODE, publicK);  
         int inputLen = encryptedData.length;  
         ByteArrayOutputStream out = new ByteArrayOutputStream();  
@@ -273,7 +273,7 @@ public class RSAUtils {
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);  
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);  
         Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);  
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());  
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, privateK);  
         int inputLen = data.length;  
         ByteArrayOutputStream out = new ByteArrayOutputStream();  

@@ -7,6 +7,12 @@ import com.xtool.dtcquery.utils.Base64;
 
 public class AESUtil {
 
+    /**
+     * AES加密
+     * @param data
+     * @param key
+     * @return
+     */
 	public static String encrypt(String data , String key) {  
         try {  
             SecretKeySpec spec = new SecretKeySpec(key.getBytes("UTF-8"),"AES");  
@@ -17,9 +23,14 @@ public class AESUtil {
         } catch (Exception e) {  
             return null;  
         }  
-    }  
-  
-  
+    }
+
+    /**
+     * AES解密
+     * @param data
+     * @param key
+     * @return
+     */
     public static String decrypt(String data, String key) {  
         try {  
             SecretKeySpec spec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");  
