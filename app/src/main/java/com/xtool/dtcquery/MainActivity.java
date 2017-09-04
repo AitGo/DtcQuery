@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.xtool.dtcquery.adapter.DtcListAdapter;
 import com.xtool.dtcquery.bean.DtcCustom;
+import com.xtool.dtcquery.bean.Message;
+import com.xtool.dtcquery.bean.User;
 import com.xtool.dtcquery.http.ServiceFactory;
 import com.xtool.dtcquery.http.PostActivation;
 import com.xtool.dtcquery.utils.RxBus;
@@ -60,7 +62,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         RxBus.getInstance().subscribe(String.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
-                if(o.toString().equals("发送事件1"))
+                if(o.toString().equals("发送事件"))
                     Toast.makeText(getApplicationContext(),"1234",Toast.LENGTH_LONG).show();
             }
         });
@@ -74,15 +76,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 String dcode = et_dcode.getText().toString();
                 DtcCustom dtc = new DtcCustom();
                 dtc.setDcode(dcode);
-                Gson gson = new Gson();
-                String json = gson.toJson(dtc);
-                Log.d(TAG, "Json: " + json);
-
                 ServiceFactory.getInstance().createService(PostActivation.class)
                         .postActivation(dtc,"queryDtcByDcodeJson.action")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-//                        .compose(TransformUtils.<List<DtcCustom>>defaultSchedulers())
                         .subscribeWith(new DisposableObserver<List<DtcCustom>>() {
                             @Override
                             public void onNext(@NonNull List<DtcCustom> dtcCustoms) {

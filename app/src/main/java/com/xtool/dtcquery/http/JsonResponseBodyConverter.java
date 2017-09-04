@@ -7,15 +7,14 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.xtool.dtcquery.bean.DtcCustom;
 import com.xtool.dtcquery.bean.Message;
-import com.xtool.dtcquery.utils.AESUtil;
 import com.xtool.dtcquery.utils.Base64Utils;
+import com.xtool.dtcquery.utils.CodingUtils;
 import com.xtool.dtcquery.utils.ContextUtil;
-import com.xtool.dtcquery.utils.DeCodingUtils;
-import com.xtool.dtcquery.utils.GsonUtils;
 import com.xtool.dtcquery.utils.RSAUtils;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -38,22 +37,25 @@ public class JsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
     @Override
     public T convert(ResponseBody value) throws IOException{
         String StrRes = value.string();
-        Message<List<DtcCustom>> message = gson.fromJson(StrRes, new TypeToken<Message<List<DtcCustom>>>() {}.getType());
+        Log.e("返回的Json", StrRes);
+        Message<T> message = gson.fromJson(StrRes, new TypeToken<Message<T>>() {}.getType());
         if(message.getCode() != 0) {
             throw new IOException(message.getMsg());
         }
-        List<DtcCustom> list = message.getData();
-        for (DtcCustom dtcCustom : list) {
-            String key = dtcCustom.getKey();
-            String publicKey = null;
+        String dataJson = gson.toJson(message.getData());
+        List list = (List) adapter.fromJson(dataJson);
+        for (Object object : list) {
             try {
-                publicKey = RSAUtils.getKey(ContextUtil.getInstance().getAssets().open("publicKey.cer"));
-                byte[] dekey = Base64Utils.decode(key);
+                Field field = object.getClass().getDeclaredField("key");
+                field.setAccessible(true);
+                Object key = field.get(object);
+                String publicKey = RSAUtils.getKey(ContextUtil.getInstance().getAssets().open("publicKey.cer"));
+                byte[] dekey = Base64Utils.decode(key.toString());
                 byte[] keybyte = RSAUtils.decryptByPublicKey(dekey, publicKey);
                 String AESKey = new String(keybyte);
-                DeCodingUtils.DeCoding(dtcCustom,AESKey);
+                CodingUtils.DeCoding(object,AESKey);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new IOException(e);
             }
         }
         return (T) list;

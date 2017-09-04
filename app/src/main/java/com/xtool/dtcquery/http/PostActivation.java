@@ -1,6 +1,8 @@
 package com.xtool.dtcquery.http;
 
 import com.xtool.dtcquery.bean.DtcCustom;
+import com.xtool.dtcquery.bean.Message;
+import com.xtool.dtcquery.bean.User;
 
 import java.util.List;
 
@@ -22,4 +24,5 @@ public interface PostActivation {
     @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
     @POST("app/{action}")
     Observable<List<DtcCustom>> postActivation(@Body DtcCustom DtcCustom, @Path("action") String action);//传入的参数为RequestBody
+
 }
