@@ -9,47 +9,48 @@
         android:orientation="horizontal">
         <TextView
             android:id="@+id/tv_dcode"
-            android:layout_width="0dp"
             android:layout_weight="0.05"
-            android:layout_height="wrap_content"
             android:text=""
-            android:textSize="18sp"
-            android:textColor="@android:color/black"/>
-
+            style="@style/DtcListText"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/>
         <TextView
             android:id="@+id/tv_dname"
-            android:layout_width="0dp"
             android:layout_weight="0.15"
-            android:layout_height="wrap_content"
             android:text=""
-            android:textSize="18sp"
-            android:textColor="@android:color/black"/>
-
+            style="@style/DtcListText"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/>
         <TextView
             android:id="@+id/tv_dinfo"
-            android:layout_width="0dp"
             android:layout_weight="0.2"
-            android:layout_height="wrap_content"
             android:text=""
-            android:textSize="18sp"
-            android:textColor="@android:color/black"/>
-
+            style="@style/DtcListText"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/>
         <TextView
             android:id="@+id/tv_dcause"
-            android:layout_width="0dp"
             android:layout_weight="0.3"
-            android:layout_height="wrap_content"
             android:text=""
-            android:textSize="18sp"
-            android:textColor="@android:color/black"/>
-
+            style="@style/DtcListText" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/>
         <TextView
             android:id="@+id/tv_dfix"
-            android:layout_width="0dp"
             android:layout_weight="0.3"
-            android:layout_height="wrap_content"
             android:text=""
-            android:textSize="18sp"
-            android:textColor="@android:color/black"/>
+            style="@style/DtcListText"/>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"/>
 </LinearLayout>

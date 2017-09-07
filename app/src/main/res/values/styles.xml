@@ -8,4 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DtcListTitle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="gravity">center</item>
+        <item name="textSize">18sp</item>
+        <item name="textColor">@android:color/black</item>
+    </style>
+
+    <style name="DtcListText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="textSize">18sp</item>
+        <item name="textColor">@android:color/black</item>
+    </style>
+
 </resources>

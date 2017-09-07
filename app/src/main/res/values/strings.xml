@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">DtcQuery</string>
+    <string name="dcode">编号</string>
+    <string name="dname">故障码名</string>
+    <string name="dinfo">故障码信息</string>
+    <string name="dcause">故障原因</string>
+    <string name="dfix">维修指导</string>
+    <string name="dtccode">故障码编号</string>
+    <string name="query">查询</string>
 </resources>

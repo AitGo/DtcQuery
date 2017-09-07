@@ -22,7 +22,7 @@ public interface PostActivation {
     String BASE_URL = "http://192.168.137.1:8080/DtcQuery/";
 
     @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
-    @POST("app/{action}")
-    Observable<List<DtcCustom>> postActivation(@Body DtcCustom DtcCustom, @Path("action") String action);//传入的参数为RequestBody
+    @POST("app/queryDtcByDcodeJson.action")
+    Observable<List<DtcCustom>> postActivation(@Body DtcCustom DtcCustom);//传入的参数为RequestBody
 
 }

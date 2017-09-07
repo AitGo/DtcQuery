@@ -4,28 +4,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.xtool.dtcquery.MainActivity"
+    tools:context="com.xtool.dtcquery.mvp.view.MainActivity"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/grayDark">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DtcQuery"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
         <EditText
             android:id="@+id/et_dcode"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text=""
+            android:hint="@string/dtccode"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:background="@drawable/bg_edittext"
             />
 
         <Button
             android:id="@+id/btn_query"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="query"
+            android:text="@string/query"
+            android:background="@drawable/bg_btn_select"
             />
     </LinearLayout>
-
+    <LinearLayout
+        android:id="@+id/ll_list_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/tv_dcode"
+                android:layout_weight="0.05"
+                style="@style/DtcListTitle"
+                android:text="@string/dcode" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray"/>
+            <TextView
+                android:id="@+id/tv_dname"
+                android:layout_weight="0.15"
+                style="@style/DtcListTitle"
+                android:text="@string/dname" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray"/>
+            <TextView
+                android:id="@+id/tv_dinfo"
+                android:layout_weight="0.2"
+                style="@style/DtcListTitle"
+                android:text="@string/dinfo" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray"/>
+            <TextView
+                android:id="@+id/tv_dcause"
+                android:layout_weight="0.3"
+                style="@style/DtcListTitle"
+                android:text="@string/dcause" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray"/>
+            <TextView
+                android:id="@+id/tv_dfix"
+                android:layout_weight="0.3"
+                style="@style/DtcListTitle"
+                android:text="@string/dfix" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+    </LinearLayout>
     <ListView
         android:id="@+id/lv_dtc"
         android:layout_width="match_parent"

@@ -43,17 +43,10 @@ public class JsonRequestBodyConverter<T> implements Converter<T, RequestBody>{
             field.set(value,uuid);
             CodingUtils.encodingByPublicKey(value,uuid);
             json = gson.toJson(value);
-//            DtcCustom dtcCustom = (DtcCustom) value;
-//            Log.e(TAG,"加密前: " + dtcCustom.toString());
-//            String uuid = RandomUtils.getRandomValue(16);
-//            dtcCustom.setKey(uuid);
-//            CodingUtils.encodingByPublicKey(dtcCustom,uuid);
-//            json = gson.toJson(dtcCustom);
             Log.e(TAG,"AES加密json: " + json);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return RequestBody.create(okhttp3.MediaType.parse("application/json;charset=UTF-8"), json);
     }
 }
