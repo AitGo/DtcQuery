@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="350dp"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@mipmap/user"
+        android:layout_gravity="center_horizontal"/>
+
+
+    <EditText
+        android:id="@+id/et_uname"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="5dp"
+        android:text=""
+        android:hint="@string/uname"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:background="@drawable/bg_edittext_black"
+        />
+
+    <EditText
+        android:id="@+id/et_upassword"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="5dp"
+        android:text=""
+        android:hint="@string/upassword"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:background="@drawable/bg_edittext_black"
+        />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/login"
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
+</LinearLayout>

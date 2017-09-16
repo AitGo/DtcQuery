@@ -1,0 +1,68 @@
+package com.xtool.dtcquery.mvp.persenter;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.xtool.dtcquery.entity.UserDTO;
+import com.xtool.dtcquery.mvp.model.LoginModel;
+import com.xtool.dtcquery.mvp.model.LoginModelImpl;
+import com.xtool.dtcquery.mvp.view.LoginView;
+
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+
+/**
+ * Created by xtool on 2017/9/14.
+ */
+
+public class LoginPersenterImpl implements LoginPersenter {
+
+    private final String TAG = this.getClass().getSimpleName();
+    private LoginView view;
+    private Context context;
+    private LoginModel model;
+
+    public LoginPersenterImpl(Context context,LoginView view) {
+        this.view = view;
+        this.context = context;
+        model = new LoginModelImpl();
+    }
+
+    @Override
+    public void login() {
+        view. showProgressDialog();
+        String uname = view.getUname();
+        String upassword = view.getUpassword();
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUname(uname);
+        userDTO.setUpassword(upassword);
+        model.GetUserCustomByPost(userDTO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<List<UserDTO>>() {
+                    @Override
+                    public void onNext(@NonNull List<UserDTO> userDTOs) {
+                        Log.e(TAG,"onNext");
+                        view.switchUserFragment(userDTOs.get(0));
+                        view.dismissProgressDialog();
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e(TAG,"onError");
+                        e.printStackTrace();
+                        view.dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e(TAG,"onComplete");
+                    }
+                });
+    }
+}

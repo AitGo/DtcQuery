@@ -1,22 +1,31 @@
-package com.xtool.dtcquery.bean;
+package com.xtool.dtcquery.entity;
 
 /**
  * Created by xtool on 2017/9/4.
  */
 
-public class User {
+public class UserDTO {
 
-    private int uid;
     private String key;
     private String uname;
     private String upassword;
 
-    public int getUid() {
-        return uid;
+    public String getUpassword() {
+        return upassword;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setUpassword(String upassword) {
+        this.upassword = upassword;
+    }
+
+    private CarDTO carDTO;
+
+    public CarDTO getCarDTO() {
+        return carDTO;
+    }
+
+    public void setCarDTO(CarDTO carDTO) {
+        this.carDTO = carDTO;
     }
 
     public String getKey() {
@@ -35,11 +44,5 @@ public class User {
         this.uname = uname;
     }
 
-    public String getUpassword() {
-        return upassword;
-    }
 
-    public void setUpassword(String upassword) {
-        this.upassword = upassword;
-    }
 }

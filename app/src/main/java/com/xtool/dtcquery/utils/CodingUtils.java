@@ -1,5 +1,7 @@
 package com.xtool.dtcquery.utils;
 
+import com.xtool.dtcquery.entity.UserDTO;
+
 import java.lang.reflect.Field;
 
 /**
@@ -58,6 +60,8 @@ public class CodingUtils {
 //						String string = String.valueOf(i);
 //						String encrypt = AESUtil.encrypt(string, uuid);
 //						field.set(t, Integer.valueOf(encrypt));
+					} else if (type.endsWith("CarDTO")) {
+						DeCoding(((UserDTO)t).getCarDTO(),uuid);
 					}
 				}
 			}

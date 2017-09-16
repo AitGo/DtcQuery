@@ -43,6 +43,8 @@ public class ProgressDialog extends android.app.ProgressDialog {
 
     @Override
     public void dismiss() {
-        super.dismiss();
+        if (this.isShowing()) {
+            super.dismiss();
+        }
     }
 }

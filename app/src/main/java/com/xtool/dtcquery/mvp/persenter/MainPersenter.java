@@ -6,5 +6,5 @@ package com.xtool.dtcquery.mvp.persenter;
 
 public interface MainPersenter {
 
-    void query();
+    void query(Integer s,Integer ps);
 }

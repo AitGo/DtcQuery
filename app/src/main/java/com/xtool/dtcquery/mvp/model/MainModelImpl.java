@@ -1,6 +1,6 @@
 package com.xtool.dtcquery.mvp.model;
 
-import com.xtool.dtcquery.bean.DtcCustom;
+import com.xtool.dtcquery.entity.DtcDTO;
 import com.xtool.dtcquery.http.PostActivation;
 import com.xtool.dtcquery.http.ServiceFactory;
 
@@ -17,10 +17,11 @@ public class MainModelImpl implements MainModel{
 
     }
     @Override
-    public Observable GetDtcCustomByPost(String dcode) {
-        DtcCustom dtcCustom = new DtcCustom();
-        dtcCustom.setDcode(dcode);
+    public Observable GetDtcCustomByPost(DtcDTO dtcDTO) {
+
         return ServiceFactory.getInstance().createService(PostActivation.class)
-                .postActivation(dtcCustom);
+                .postDtcQuery(dtcDTO);
     }
+
+
 }

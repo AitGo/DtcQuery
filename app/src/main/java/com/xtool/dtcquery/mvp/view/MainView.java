@@ -1,6 +1,8 @@
 package com.xtool.dtcquery.mvp.view;
 
-import com.xtool.dtcquery.bean.DtcCustom;
+import android.support.v4.app.Fragment;
+
+import com.xtool.dtcquery.entity.DtcDTO;
 
 import java.util.List;
 
@@ -14,11 +16,22 @@ public interface MainView {
 
     void dismissProgressDialog();
 
-    void showListMeg(List<DtcCustom> dtcCustoms);
+    void showListMeg(List<DtcDTO> dtcDTOs);
+
+    void showListMoreMeg(List<DtcDTO> dtcDTOs);
 
     String getDcode();
 
     void dismissListTitle();
 
     void showListTitle();
+
+    void showToast(String msg);
+
+    void showDrawer();
+
+    void dismissDrawer();
+
+    void switchFragment(Fragment fragment);
+
 }

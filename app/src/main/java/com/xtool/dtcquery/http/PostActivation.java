@@ -1,8 +1,7 @@
 package com.xtool.dtcquery.http;
 
-import com.xtool.dtcquery.bean.DtcCustom;
-import com.xtool.dtcquery.bean.Message;
-import com.xtool.dtcquery.bean.User;
+import com.xtool.dtcquery.entity.DtcDTO;
+import com.xtool.dtcquery.entity.UserDTO;
 
 import java.util.List;
 
@@ -10,7 +9,6 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 
 /**
@@ -21,8 +19,12 @@ public interface PostActivation {
 
     String BASE_URL = "http://192.168.137.1:8080/DtcQuery/";
 
-    @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
+    @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("app/queryDtcByDcodeJson.action")
-    Observable<List<DtcCustom>> postActivation(@Body DtcCustom DtcCustom);//传入的参数为RequestBody
+    Observable<List<DtcDTO>> postDtcQuery(@Body DtcDTO dtcDTO);
+
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("app/userLogin.action")
+    Observable<List<UserDTO>> postUserLogin(@Body UserDTO userDTO);
 
 }

@@ -4,12 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.base.MyBaseAdapter;
-import com.xtool.dtcquery.bean.DtcCustom;
+import com.xtool.dtcquery.entity.DtcDTO;
 
 import java.util.List;
 
@@ -19,11 +18,11 @@ import java.util.List;
 
 public class DtcListAdapter extends MyBaseAdapter {
     private LayoutInflater mLayoutInflater;
-    private List<DtcCustom> dtcCustomList;
+    private List<DtcDTO> dtcDTOList;
 
-    public DtcListAdapter(Context context,List<DtcCustom> dtcCustomList) {
-        super(dtcCustomList);
-        this.dtcCustomList = dtcCustomList;
+    public DtcListAdapter(Context context,List<DtcDTO> dtcDTOList) {
+        super(dtcDTOList);
+        this.dtcDTOList = dtcDTOList;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -43,11 +42,11 @@ public class DtcListAdapter extends MyBaseAdapter {
         }else {
             viewHolder = (DtcListViewHolder) convertView.getTag();
         }
-        viewHolder.m_dcode.setText(dtcCustomList.get(position).getDcode());
-        viewHolder.m_dname.setText(dtcCustomList.get(position).getDname());
-        viewHolder.m_dinfo.setText(dtcCustomList.get(position).getDinfo());
-        viewHolder.m_dcause.setText(dtcCustomList.get(position).getDcause());
-        viewHolder.m_dfix.setText(dtcCustomList.get(position).getDfix());
+        viewHolder.m_dcode.setText(dtcDTOList.get(position).getDcode());
+        viewHolder.m_dname.setText(dtcDTOList.get(position).getDname());
+        viewHolder.m_dinfo.setText(dtcDTOList.get(position).getDinfo());
+        viewHolder.m_dcause.setText(dtcDTOList.get(position).getDcause());
+        viewHolder.m_dfix.setText(dtcDTOList.get(position).getDfix());
 
         return convertView;
     }

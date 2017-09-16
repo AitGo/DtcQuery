@@ -1,4 +1,4 @@
-package com.xtool.dtcquery.bean;
+package com.xtool.dtcquery.entity;
 
 /**
  * Created by xtool on 2017/9/2.

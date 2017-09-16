@@ -1,8 +1,10 @@
 package com.xtool.dtcquery.mvp.persenter;
 
+import android.content.Context;
 import android.util.Log;
 
-import com.xtool.dtcquery.bean.DtcCustom;
+import com.xtool.dtcquery.R;
+import com.xtool.dtcquery.entity.DtcDTO;
 import com.xtool.dtcquery.mvp.model.MainModel;
 import com.xtool.dtcquery.mvp.model.MainModelImpl;
 import com.xtool.dtcquery.mvp.view.MainView;
@@ -20,34 +22,39 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class MainPersenterImpl implements MainPersenter {
+
     private final String TAG = this.getClass().getSimpleName();
     private MainView view;
     private MainModel model;
+    private Context context;
 
-    public MainPersenterImpl(MainView view) {
+    public MainPersenterImpl(Context context,MainView view) {
         this.view = view;
+        this.context = context;
         model = new MainModelImpl();
     }
+
     @Override
-    public void query() {
+    public void query(final Integer s, Integer ps) {
         view.showProgressDialog();
         RxBus.getInstance().send("发送事件");
         String dcode = view.getDcode();
-        model.GetDtcCustomByPost(dcode)
+        DtcDTO dtcDTO = setDcodeToDtcCustom(dcode, s, ps);
+
+        model.GetDtcCustomByPost(dtcDTO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<List<DtcCustom>>() {
+                .subscribeWith(new DisposableObserver<List<DtcDTO>>() {
                     @Override
-                    public void onNext(@NonNull List<DtcCustom> dtcCustomList) {
+                    public void onNext(@NonNull List<DtcDTO> dtcDTOList) {
                         Log.e(TAG,"onNext");
-                        doNext(dtcCustomList);
+                        doNext(dtcDTOList);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.e(TAG,"onError");
-                        view.dismissProgressDialog();
-                        view.dismissListTitle();
+                        Log.e(TAG,"onError: "+ e.getMessage());
+                        doError();
                     }
 
                     @Override
@@ -57,12 +64,28 @@ public class MainPersenterImpl implements MainPersenter {
                 });
     }
 
-    private void doNext(List<DtcCustom> dtcCustomList) {
-        if(dtcCustomList.size() > 0) {
-            view.showListMeg(dtcCustomList);
+    private DtcDTO setDcodeToDtcCustom(String dcode, Integer s, Integer ps) {
+
+        DtcDTO dtcDTO = new DtcDTO();
+        dtcDTO.setDcode(dcode);
+        dtcDTO.setS(s);
+        dtcDTO.setPs(ps);
+        return dtcDTO;
+    }
+
+    private void doError() {
+        view.dismissProgressDialog();
+        view.dismissListTitle();
+        view.showToast(context.getString(R.string.nointernet));
+    }
+
+    private void doNext(List<DtcDTO> dtcDTOList) {
+        if(dtcDTOList.size() > 0) {
+            view.showListMeg(dtcDTOList);
             view.showListTitle();
         }else {
             view.dismissListTitle();
+            view.showToast(context.getString(R.string.nodcode));
         }
         view.dismissProgressDialog();
     }
