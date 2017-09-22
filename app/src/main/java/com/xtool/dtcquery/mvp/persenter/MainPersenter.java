@@ -7,4 +7,8 @@ package com.xtool.dtcquery.mvp.persenter;
 public interface MainPersenter {
 
     void query(Integer s,Integer ps);
+
+    void onScrolled(int item);
+
+    void onScrollStateChanged();
 }

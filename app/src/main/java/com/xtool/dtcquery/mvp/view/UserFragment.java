@@ -12,7 +12,7 @@ import com.xtool.dtcquery.entity.UserDTO;
  * Created by xtool on 2017/9/14.
  */
 
-public class UserFragment extends BaseFragment {
+public class UserFragment extends BaseFragment implements UserView{
 
     private TextView tv_uname;
     private TextView tv_cname;

@@ -5,7 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
-import com.xtool.dtcquery.entity.Message;
+import com.xtool.dtcquery.entity.MessageDTO;
 import com.xtool.dtcquery.utils.Base64Utils;
 import com.xtool.dtcquery.utils.CodingUtils;
 import com.xtool.dtcquery.utils.ContextUtil;
@@ -36,11 +36,11 @@ public class JsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
     public T convert(ResponseBody value) throws IOException{
         String StrRes = value.string();
         Log.e("返回的Json", StrRes);
-        Message<T> message = gson.fromJson(StrRes, new TypeToken<Message<T>>() {}.getType());
-        if(message.getCode() != 0) {
-            throw new IOException(message.getMsg());
+        MessageDTO<T> messageDTO = gson.fromJson(StrRes, new TypeToken<MessageDTO<T>>() {}.getType());
+        if(messageDTO.getCode() != 0) {
+            throw new IOException(messageDTO.getMsg());
         }
-        String dataJson = gson.toJson(message.getData());
+        String dataJson = gson.toJson(messageDTO.getData());
         List list = (List) adapter.fromJson(dataJson);
         for (Object object : list) {
             try {

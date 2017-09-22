@@ -4,7 +4,7 @@ package com.xtool.dtcquery.entity;
  * Created by xtool on 2017/9/2.
  */
 
-public class Message<T> {
+public class MessageDTO<T> {
 
     private int code;
     private String msg;

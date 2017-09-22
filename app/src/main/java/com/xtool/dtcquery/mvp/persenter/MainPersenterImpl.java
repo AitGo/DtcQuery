@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.xtool.dtcquery.R;
+import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
 import com.xtool.dtcquery.entity.DtcDTO;
 import com.xtool.dtcquery.mvp.model.MainModel;
 import com.xtool.dtcquery.mvp.model.MainModelImpl;
@@ -22,6 +23,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class MainPersenterImpl implements MainPersenter {
+
+    private int PAGE_COUNT = 6;
 
     private final String TAG = this.getClass().getSimpleName();
     private MainView view;
@@ -64,6 +67,58 @@ public class MainPersenterImpl implements MainPersenter {
                 });
     }
 
+    @Override
+    public void onScrolled(int item) {
+        view.setLastVisibleItem(item);
+    }
+
+    @Override
+    public void onScrollStateChanged() {
+        final DtcRecyclerAdapter adapter = view.getRecyclerAdatper();
+        int lastVisibleItem = view.getLastVisibleItem();
+        if(adapter.isFadeTips() == false && lastVisibleItem +1 == adapter.getItemCount()) {
+            loadMore(adapter.getRealLastPosition(), adapter.getRealLastPosition() + PAGE_COUNT);
+        }
+        if (adapter.isFadeTips() == true && lastVisibleItem + 2 == adapter.getItemCount()) {
+            loadMore(adapter.getRealLastPosition(), adapter.getRealLastPosition() + PAGE_COUNT);
+        }
+    }
+
+    // 上拉加载时调用的更新RecyclerView的方法
+    private void loadMore(int s ,int ps) {
+        view.showProgressDialog();
+        String dcode = view.getDcode();
+        DtcDTO dtcDTO = setDcodeToDtcCustom(dcode, s, ps);
+
+        model.GetDtcCustomByPost(dtcDTO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<List<DtcDTO>>() {
+                    @Override
+                    public void onNext(@NonNull List<DtcDTO> dtcDTOList) {
+                        Log.e(TAG,"onNext");
+                        if (dtcDTOList.size() > 0) {
+                            // 然后传给Adapter，并设置hasMore为true
+                            view.getRecyclerAdatper().updateList(dtcDTOList, true);
+                        } else {
+                            view.getRecyclerAdatper().updateList(null, false);
+                        }
+                        view.dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e(TAG,"onError: "+ e.getMessage());
+                        view.dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e(TAG,"onComplete");
+                    }
+                });
+    }
+
     private DtcDTO setDcodeToDtcCustom(String dcode, Integer s, Integer ps) {
 
         DtcDTO dtcDTO = new DtcDTO();
@@ -81,7 +136,8 @@ public class MainPersenterImpl implements MainPersenter {
 
     private void doNext(List<DtcDTO> dtcDTOList) {
         if(dtcDTOList.size() > 0) {
-            view.showListMeg(dtcDTOList);
+//            view.showListMeg(dtcDTOList);
+            view.getRecyclerAdatper().updateList(dtcDTOList, false);
             view.showListTitle();
         }else {
             view.dismissListTitle();

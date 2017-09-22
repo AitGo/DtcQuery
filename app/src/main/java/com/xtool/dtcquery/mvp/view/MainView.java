@@ -2,6 +2,7 @@ package com.xtool.dtcquery.mvp.view;
 
 import android.support.v4.app.Fragment;
 
+import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
 import com.xtool.dtcquery.entity.DtcDTO;
 
 import java.util.List;
@@ -33,5 +34,11 @@ public interface MainView {
     void dismissDrawer();
 
     void switchFragment(Fragment fragment);
+
+    void setLastVisibleItem(int item);
+
+    int getLastVisibleItem();
+
+    DtcRecyclerAdapter getRecyclerAdatper();
 
 }
