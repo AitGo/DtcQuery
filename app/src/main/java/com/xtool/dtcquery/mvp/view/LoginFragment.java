@@ -1,5 +1,6 @@
 package com.xtool.dtcquery.mvp.view;
 
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,9 @@ import com.xtool.dtcquery.base.BaseFragment;
 import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.persenter.LoginPersenter;
 import com.xtool.dtcquery.mvp.persenter.LoginPersenterImpl;
+import com.xtool.dtcquery.utils.RxBus;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by xtool on 2017/9/14.
@@ -20,6 +24,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
     private Button btn_login;
     private Button btn_cancel;
     private Button btn_register;
+    private Button btn_editpassword;
     private EditText et_uname;
     private EditText et_upassword;
 
@@ -31,15 +36,19 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
         btn_login = (Button) inflate.findViewById(R.id.btn_login);
         btn_cancel = (Button) inflate.findViewById(R.id.btn_cancel);
         btn_register = (Button) inflate.findViewById(R.id.btn_register);
+        btn_editpassword = (Button) inflate.findViewById(R.id.btn_editpassword);
         et_uname = (EditText) inflate.findViewById(R.id.et_uname);
         et_upassword = (EditText) inflate.findViewById(R.id.et_upassword);
 
         btn_login.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
         btn_register.setOnClickListener(this);
+        btn_editpassword.setOnClickListener(this);
 
         persenter = new LoginPersenterImpl(getContext(),this);
+
         return inflate;
+
     }
 
     @Override
@@ -52,6 +61,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
                 break;
             case R.id.btn_register:
+
+                break;
+            case R.id.btn_editpassword:
 
                 break;
         }
@@ -69,8 +81,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void switchUserFragment() {
-
+    public void switchFragment(Fragment fragment) {
+        ((MainActivity)getActivity()).switchFragment(fragment);
     }
 
     @Override

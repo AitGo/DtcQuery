@@ -1,8 +1,11 @@
 package com.xtool.dtcquery.adapter;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.entity.DtcDTO;
+import com.xtool.dtcquery.utils.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +33,8 @@ public class DtcRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private boolean hasMore = true;   // 变量，是否有更多数据
     private boolean fadeTips = false; // 变量，是否隐藏了底部的提示
+
+    private ValueAnimator valueAnimator;
 
     private Handler mHandler = new Handler(Looper.getMainLooper()); //获取主线程的Handler
 
@@ -98,6 +104,7 @@ public class DtcRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         // 如果是正常的imte，直接设置TextView的值
@@ -108,7 +115,7 @@ public class DtcRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((NormalHolder) holder).tv_dcause.setText(datas.get(position).getDcause());
             ((NormalHolder) holder).tv_dfix.setText(datas.get(position).getDfix());
         } else {
-            // 之所以要设置可见，是因为我在没有更多数据时会隐藏了这个footView
+            // 之所以要设置可见，是因为在没有更多数据时会隐藏了这个footView
             ((FootHolder) holder).tips.setVisibility(View.VISIBLE);
             // 只有获取数据为空时，hasMore为false，所以当我们拉到底部时基本都会首先显示“正在加载更多...”
             if (hasMore == true) {
@@ -116,23 +123,27 @@ public class DtcRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 fadeTips = false;
                 if (datas.size() > 0) {
                     // 如果查询数据发现增加之后，就显示正在加载更多
-                    ((FootHolder) holder).tips.setText("正在加载更多...");
+                    ((FootHolder) holder).tips.setText(R.string.loadingmore);
                 }
             } else {
                 if (datas.size() > 0) {
+//                    ((FootHolder) holder).tips.setAnimation(AnimationUtils.moveToViewBottom());
                     // 如果查询数据发现并没有增加时，就显示没有更多数据了
-                    ((FootHolder) holder).tips.setText("没有更多数据了");
+                    ((FootHolder) holder).tips.setText(R.string.nomoredata);
 
                     // 然后通过延时加载模拟网络请求的时间，在500ms后执行
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             // 隐藏提示条
-                            ((FootHolder) holder).tips.setVisibility(View.GONE);
+//                            ((FootHolder) holder).tips.setVisibility(View.GONE);
                             // 将fadeTips设置true
                             fadeTips = true;
                             // hasMore设为true是为了让再次拉到底时，会先显示正在加载更多
                             hasMore = true;
+                            valueAnimator = AnimationUtils.open(((FootHolder) holder).tips);
+                            valueAnimator.setDuration(1000);
+                            valueAnimator.start();
                         }
                     }, 500);
                 }

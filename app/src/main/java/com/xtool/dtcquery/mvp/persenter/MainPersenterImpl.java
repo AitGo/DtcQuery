@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainPersenterImpl implements MainPersenter {
 
-    private int PAGE_COUNT = 6;
+    private int PAGE_COUNT = 7;
 
     private final String TAG = this.getClass().getSimpleName();
     private MainView view;
@@ -77,16 +77,22 @@ public class MainPersenterImpl implements MainPersenter {
         final DtcRecyclerAdapter adapter = view.getRecyclerAdatper();
         int lastVisibleItem = view.getLastVisibleItem();
         if(adapter.isFadeTips() == false && lastVisibleItem +1 == adapter.getItemCount()) {
-            loadMore(adapter.getRealLastPosition(), adapter.getRealLastPosition() + PAGE_COUNT);
+            loadMore(adapter.getRealLastPosition(), PAGE_COUNT);
         }
         if (adapter.isFadeTips() == true && lastVisibleItem + 2 == adapter.getItemCount()) {
-            loadMore(adapter.getRealLastPosition(), adapter.getRealLastPosition() + PAGE_COUNT);
+            loadMore(adapter.getRealLastPosition(), PAGE_COUNT);
         }
+
+    }
+
+    @Override
+    public int getPAGE_COUNT() {
+        return PAGE_COUNT;
     }
 
     // 上拉加载时调用的更新RecyclerView的方法
     private void loadMore(int s ,int ps) {
-        view.showProgressDialog();
+//        view.showProgressDialog();
         String dcode = view.getDcode();
         DtcDTO dtcDTO = setDcodeToDtcCustom(dcode, s, ps);
 
@@ -103,13 +109,11 @@ public class MainPersenterImpl implements MainPersenter {
                         } else {
                             view.getRecyclerAdatper().updateList(null, false);
                         }
-                        view.dismissProgressDialog();
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.e(TAG,"onError: "+ e.getMessage());
-                        view.dismissProgressDialog();
                     }
 
                     @Override
@@ -137,7 +141,7 @@ public class MainPersenterImpl implements MainPersenter {
     private void doNext(List<DtcDTO> dtcDTOList) {
         if(dtcDTOList.size() > 0) {
 //            view.showListMeg(dtcDTOList);
-            view.getRecyclerAdatper().updateList(dtcDTOList, false);
+            view.getRecyclerAdatper().updateList(dtcDTOList, true);
             view.showListTitle();
         }else {
             view.dismissListTitle();
@@ -145,4 +149,5 @@ public class MainPersenterImpl implements MainPersenter {
         }
         view.dismissProgressDialog();
     }
+
 }

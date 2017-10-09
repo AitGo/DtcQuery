@@ -1,5 +1,7 @@
 package com.xtool.dtcquery.mvp.view;
 
+import android.support.v4.app.Fragment;
+
 import com.xtool.dtcquery.entity.UserDTO;
 
 /**
@@ -17,7 +19,7 @@ public interface LoginView {
 
     void showToast(String msg);
 
-    void switchUserFragment();
+    void switchFragment(Fragment fragment);
 
     void switchUserFragment(UserDTO userDTO);
 

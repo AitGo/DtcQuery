@@ -1,8 +1,10 @@
 package com.xtool.dtcquery.mvp.view;
 
+import android.animation.LayoutTransition;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,11 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.xtool.dtcquery.R;
-import com.xtool.dtcquery.adapter.DtcListAdapter;
 import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
 import com.xtool.dtcquery.base.BaseActivity;
 import com.xtool.dtcquery.entity.DtcDTO;
@@ -25,7 +25,6 @@ import com.xtool.dtcquery.mvp.persenter.MainPersenter;
 import com.xtool.dtcquery.mvp.persenter.MainPersenterImpl;
 import com.xtool.dtcquery.utils.RxBus;
 import com.xtool.dtcquery.widget.DividerGridItemDecoration;
-import com.xtool.dtcquery.widget.PullUpLoadMoreListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +49,7 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
     private List<DtcDTO> dtcDTOList = new ArrayList<DtcDTO>();
     private List<DtcDTO> dtcDTOList1 = new ArrayList<DtcDTO>();
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void init() {
         setContentView(R.layout.activity_main);
@@ -59,8 +59,10 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         transaction.add(R.id.fl_left,loginFragment,"login");
         transaction.show(loginFragment);
         transaction.commit();
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     private void initView() {
         fl_left = (FrameLayout) findViewById(R.id.fl_left);
         dl_left = (DrawerLayout) findViewById(R.id.dl_left);
@@ -74,11 +76,7 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         btn_query.setOnClickListener(this);
 
         initRecyclerView();
-
-
         dismissListTitle();
-
-
         RxBus.getInstance().subscribe(String.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
@@ -86,6 +84,14 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
                     Toast.makeText(getApplicationContext(),"1234",Toast.LENGTH_LONG).show();
             }
         });
+        RxBus.getInstance().subscribe(Integer.class, new Consumer() {
+            @Override
+            public void accept(Object o) throws Exception {
+//                if(o.toString().equals("发送事件1"))
+                btn_query.setText("2134");
+            }
+        });
+
     }
 
     private void initRecyclerView() {
@@ -119,7 +125,9 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_query:
-                persenter.query(0,6);
+                dtcDTOList1.clear();
+                adapter.notifyDataSetChanged();
+                persenter.query(0,persenter.getPAGE_COUNT());
                 break;
             case R.id.btn_left_menu:
                 showDrawer();
@@ -191,14 +199,4 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         }
         return adapter;
     }
-
-//    @Override
-//    public void onLoad() {
-//
-//        Log.e(TAG,"total: " + lv_dtc.getTotalItemCount());
-//        Log.e(TAG,"lastVisibieItem: " + lv_dtc.getLastVisibieItem());
-//        persenter.query(lv_dtc.getLastVisibieItem(),PullUpLoadMoreListView.PAGESIZE);
-//        Toast.makeText(this,"onLoad",Toast.LENGTH_LONG).show();
-//        lv_dtc.loadComplete();
-//    }
 }

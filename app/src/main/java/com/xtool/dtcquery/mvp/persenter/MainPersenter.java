@@ -11,4 +11,6 @@ public interface MainPersenter {
     void onScrolled(int item);
 
     void onScrollStateChanged();
+
+    int getPAGE_COUNT();
 }
