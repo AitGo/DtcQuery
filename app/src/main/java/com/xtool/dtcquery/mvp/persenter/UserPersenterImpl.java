@@ -3,6 +3,7 @@ package com.xtool.dtcquery.mvp.persenter;
 import android.content.Context;
 
 import com.xtool.dtcquery.mvp.model.LoginModelImpl;
+import com.xtool.dtcquery.mvp.view.EditPasswordFragment;
 import com.xtool.dtcquery.mvp.view.LoginFragment;
 import com.xtool.dtcquery.mvp.view.LoginView;
 import com.xtool.dtcquery.mvp.view.UserView;
@@ -25,5 +26,10 @@ public class UserPersenterImpl implements UserPersenter {
     @Override
     public void logout() {
         view.switchFragment(new LoginFragment());
+    }
+
+    @Override
+    public void switchToEditPassword() {
+        view.switchFragment(new EditPasswordFragment(view.getUser()));
     }
 }

@@ -7,4 +7,6 @@ package com.xtool.dtcquery.mvp.persenter;
 public interface UserPersenter {
 
     void logout();
+
+    void switchToEditPassword();
 }

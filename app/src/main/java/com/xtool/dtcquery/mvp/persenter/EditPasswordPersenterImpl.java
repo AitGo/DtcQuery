@@ -1,11 +1,22 @@
 package com.xtool.dtcquery.mvp.persenter;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.xtool.dtcquery.R;
+import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.model.EditPasswordModel;
 import com.xtool.dtcquery.mvp.model.EditPasswordModelImpl;
 import com.xtool.dtcquery.mvp.view.EditPasswordFragment;
 import com.xtool.dtcquery.mvp.view.EditPasswordView;
+import com.xtool.dtcquery.mvp.view.UserFragment;
+
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by xtool on 2017/10/9.
@@ -24,8 +35,57 @@ public class EditPasswordPersenterImpl implements EditPasswordPersenter {
         model = new EditPasswordModelImpl();
     }
 
+    /**
+     *
+     * @return null输入有误
+     */
+    private String getNewPassword() {
+        if(view.getNewPassword() != null && view.getNewPassword2() != null) {
+            if(view.getNewPassword().equals(view.getNewPassword2())) {
+                return view.getNewPassword();
+            }
+        }
+        return null;
+    }
+
     @Override
     public void editPassword() {
+        view.showProgressDialog();
+        if (getNewPassword() != null) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUname(view.getUserName());
+            userDTO.setUpassword(getNewPassword());
+            model.editPasswordByPost(userDTO)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableObserver<List<UserDTO>>() {
+                        @Override
+                        public void onNext(@NonNull List<UserDTO> userDTOs) {
 
+                            view.dismissProgressDialog();
+                            view.showToast(context.getString(R.string.editsuccess));
+                            view.switchFragment(new UserFragment(userDTOs.get(0)));
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            e.printStackTrace();
+//                            Log.e("123",e.getMessage());
+                            view.showToast("111");
+                            view.dismissProgressDialog();
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            view.dismissProgressDialog();
+                        }
+                    });
+        }else {
+            //输入有误，重新输入
+            view.showToast(context.getString(R.string.editagain));
+            view.setNewPassword("");
+            view.setNewPassword2("");
+            view.dismissProgressDialog();
+        }
     }
 }

@@ -11,6 +11,7 @@ import com.xtool.dtcquery.base.BaseFragment;
 import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.persenter.UserPersenter;
 import com.xtool.dtcquery.mvp.persenter.UserPersenterImpl;
+import com.xtool.dtcquery.utils.SPUtils;
 
 /**
  * Created by xtool on 2017/9/14.
@@ -24,6 +25,7 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
     private TextView tv_cproduct;
     private TextView tv_cdisplacement;
     private Button btn_logout;
+    private Button btn_editpassword;
 
     private UserDTO userDTO;
 
@@ -46,20 +48,20 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
         tv_cproduct = (TextView) inflate.findViewById(R.id.tv_cproduct);
         tv_cdisplacement = (TextView) inflate.findViewById(R.id.tv_cdisplacement);
         btn_logout = (Button) inflate.findViewById(R.id.btn_logout);
-
+        btn_editpassword = (Button) inflate.findViewById(R.id.btn_editpassword);
         btn_logout.setOnClickListener(this);
-
+        btn_editpassword.setOnClickListener(this);
         persenter = new UserPersenterImpl(getContext(),this);
         initData();
         return inflate;
     }
 
     private void initData() {
-        tv_uname.setText(userDTO.getUname());
-        tv_cname.setText(userDTO.getCarDTO().getCname());
-        tv_ctype.setText(userDTO.getCarDTO().getCtype());
-        tv_cproduct.setText(userDTO.getCarDTO().getCproduct());
-        tv_cdisplacement.setText(userDTO.getCarDTO().getCdisplacement());
+        tv_uname.setText((String) SPUtils.getParam(getContext(),"uname",""));
+        tv_cname.setText((String) SPUtils.getParam(getContext(),"cname",""));
+        tv_ctype.setText((String) SPUtils.getParam(getContext(),"ctype",""));
+        tv_cproduct.setText((String) SPUtils.getParam(getContext(),"cproduct",""));
+        tv_cdisplacement.setText((String) SPUtils.getParam(getContext(),"cdisplacement",""));
     }
 
     @Override
@@ -68,11 +70,19 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
             case R.id.btn_logout:
                 persenter.logout();
                 break;
+            case R.id.btn_editpassword:
+                persenter.switchToEditPassword();
+                break;
         }
     }
 
     @Override
     public void switchFragment(Fragment fragment) {
         ((MainActivity)getActivity()).switchFragment(fragment);
+    }
+
+    @Override
+    public UserDTO getUser() {
+        return userDTO;
     }
 }

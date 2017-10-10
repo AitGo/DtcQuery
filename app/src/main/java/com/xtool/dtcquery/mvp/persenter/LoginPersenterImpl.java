@@ -7,6 +7,7 @@ import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.model.LoginModel;
 import com.xtool.dtcquery.mvp.model.LoginModelImpl;
 import com.xtool.dtcquery.mvp.view.LoginView;
+import com.xtool.dtcquery.utils.SPUtils;
 
 import java.util.List;
 
@@ -47,6 +48,20 @@ public class LoginPersenterImpl implements LoginPersenter {
                     @Override
                     public void onNext(@NonNull List<UserDTO> userDTOs) {
                         Log.e(TAG,"onNext");
+                        //缓存user信息
+                        SPUtils.setParam(context,"uname",userDTOs.get(0).getUname());
+                        if(userDTOs.get(0).getCarDTO() != null) {
+                            SPUtils.setParam(context,"cname",userDTOs.get(0).getCarDTO().getCname());
+                            SPUtils.setParam(context,"ctype",userDTOs.get(0).getCarDTO().getCtype());
+                            SPUtils.setParam(context,"cproduct",userDTOs.get(0).getCarDTO().getCproduct());
+                            SPUtils.setParam(context,"cdisplacement",userDTOs.get(0).getCarDTO().getCdisplacement());
+                        }else {
+                            SPUtils.setParam(context,"cname","");
+                            SPUtils.setParam(context,"ctype","");
+                            SPUtils.setParam(context,"cproduct","");
+                            SPUtils.setParam(context,"cdisplacement","");
+                        }
+
                         view.switchUserFragment(userDTOs.get(0));
                         view.dismissProgressDialog();
 

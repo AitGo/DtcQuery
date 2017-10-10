@@ -24,7 +24,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
     private Button btn_login;
     private Button btn_cancel;
     private Button btn_register;
-    private Button btn_editpassword;
+
     private EditText et_uname;
     private EditText et_upassword;
 
@@ -36,14 +36,14 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
         btn_login = (Button) inflate.findViewById(R.id.btn_login);
         btn_cancel = (Button) inflate.findViewById(R.id.btn_cancel);
         btn_register = (Button) inflate.findViewById(R.id.btn_register);
-        btn_editpassword = (Button) inflate.findViewById(R.id.btn_editpassword);
+
         et_uname = (EditText) inflate.findViewById(R.id.et_uname);
         et_upassword = (EditText) inflate.findViewById(R.id.et_upassword);
 
         btn_login.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
         btn_register.setOnClickListener(this);
-        btn_editpassword.setOnClickListener(this);
+
 
         persenter = new LoginPersenterImpl(getContext(),this);
 
@@ -63,11 +63,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
             case R.id.btn_register:
 
                 break;
-            case R.id.btn_editpassword:
-
-                break;
         }
-
     }
 
     @Override

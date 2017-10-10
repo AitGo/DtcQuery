@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
                     Toast.makeText(getApplicationContext(),"1234",Toast.LENGTH_LONG).show();
             }
         });
-        RxBus.getInstance().subscribe(Integer.class, new Consumer() {
+        RxBus.getInstance().subscribe(String.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
 //                if(o.toString().equals("发送事件1"))
