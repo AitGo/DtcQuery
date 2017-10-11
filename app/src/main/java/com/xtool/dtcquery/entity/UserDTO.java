@@ -9,6 +9,15 @@ public class UserDTO {
     private String key;
     private String uname;
     private String upassword;
+    private String islogin;
+
+    public String getIslogin() {
+        return islogin;
+    }
+
+    public void setIslogin(String islogin) {
+        this.islogin = islogin;
+    }
 
     public String getUpassword() {
         return upassword;

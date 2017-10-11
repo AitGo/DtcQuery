@@ -41,6 +41,7 @@ public class LoginPersenterImpl implements LoginPersenter {
         UserDTO userDTO = new UserDTO();
         userDTO.setUname(uname);
         userDTO.setUpassword(upassword);
+        userDTO.setIslogin("login");
         model.GetUserCustomByPost(userDTO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
