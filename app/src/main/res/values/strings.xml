@@ -16,7 +16,8 @@
     <string name="register">注册</string>
     <string name="loadingmore">正在加载更多...</string>
     <string name="nomoredata">没有更多数据了</string>
-    <string name="editpassword">忘记密码</string>
+    <string name="editpassword">修改密码</string>
     <string name="editsuccess">修改成功</string>
     <string name="editagain">输入有误，请重新输入</string>
+    <string name="empty_uname_upassword">用户名或密码不能为空！</string>
 </resources>

@@ -9,4 +9,6 @@ public interface UserPersenter {
     void logout();
 
     void switchToEditPassword();
+
+    void switchToEditUserInfo();
 }

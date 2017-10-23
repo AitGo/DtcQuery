@@ -8,9 +8,11 @@ import android.widget.EditText;
 
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.base.BaseFragment;
+import com.xtool.dtcquery.entity.CarDTO;
 import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.persenter.EditPasswordPersenter;
 import com.xtool.dtcquery.mvp.persenter.EditPasswordPersenterImpl;
+import com.xtool.dtcquery.utils.SPUtils;
 
 /**
  * Created by xtool on 2017/10/9.
@@ -22,14 +24,9 @@ public class EditPasswordFragment extends BaseFragment implements View.OnClickLi
     private EditText et_newpassword2;
 
     private Button btn_edit;
+    private Button btn_editcancel;
 
     private EditPasswordPersenter persenter;
-
-    private UserDTO userDTO;
-
-    public EditPasswordFragment(UserDTO userDTO) {
-        this.userDTO = userDTO;
-    }
 
     @Override
     protected View initView(LayoutInflater inflater) {
@@ -37,8 +34,9 @@ public class EditPasswordFragment extends BaseFragment implements View.OnClickLi
         et_newpassword = (EditText) inflate.findViewById(R.id.et_newpassword);
         et_newpassword2 = (EditText) inflate.findViewById(R.id.et_newpassword2);
         btn_edit = (Button) inflate.findViewById(R.id.btn_edit);
-
+        btn_editcancel = (Button) inflate.findViewById(R.id.btn_editcancel);
         btn_edit.setOnClickListener(this);
+        btn_editcancel.setOnClickListener(this);
 
         persenter = new EditPasswordPersenterImpl(getContext(),this);
         return inflate;
@@ -49,6 +47,9 @@ public class EditPasswordFragment extends BaseFragment implements View.OnClickLi
         switch (v.getId()) {
             case R.id.btn_edit:
                 persenter.editPassword();
+                break;
+            case R.id.btn_editcancel:
+                persenter.switchLoginFragment();
                 break;
         }
     }
@@ -65,7 +66,7 @@ public class EditPasswordFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public String getUserName() {
-        return userDTO.getUname();
+        return (String) SPUtils.getParam(getContext(),"uname","");
     }
 
     @Override

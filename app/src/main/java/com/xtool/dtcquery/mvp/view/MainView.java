@@ -31,6 +31,8 @@ public interface MainView {
 
     void showDrawer();
 
+    void closeDrawer();
+
     void dismissDrawer();
 
     void switchFragment(Fragment fragment);

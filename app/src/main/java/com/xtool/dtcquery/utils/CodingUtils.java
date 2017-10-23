@@ -1,5 +1,7 @@
 package com.xtool.dtcquery.utils;
 
+import android.util.Log;
+
 import com.xtool.dtcquery.entity.UserDTO;
 
 import java.lang.reflect.Field;
@@ -33,6 +35,8 @@ public class CodingUtils {
 					if(type.endsWith("String")) {
 						String encrypt = AESUtil.encrypt(object.toString(), uuid);
 						field.set(t, encrypt);
+					}else if (!type.endsWith("String") && !type.endsWith("Integer") && !type.endsWith("long")) {
+						encodingByPublicKey(field.get(t),uuid);
 					}
 				}
 			}

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.base.BaseFragment;
+import com.xtool.dtcquery.entity.CarDTO;
 import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.persenter.UserPersenter;
 import com.xtool.dtcquery.mvp.persenter.UserPersenterImpl;
@@ -26,6 +27,7 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
     private TextView tv_cdisplacement;
     private Button btn_logout;
     private Button btn_editpassword;
+    private Button btn_eidtuser;
 
     private UserDTO userDTO;
 
@@ -49,8 +51,11 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
         tv_cdisplacement = (TextView) inflate.findViewById(R.id.tv_cdisplacement);
         btn_logout = (Button) inflate.findViewById(R.id.btn_logout);
         btn_editpassword = (Button) inflate.findViewById(R.id.btn_editpassword);
+        btn_eidtuser = (Button) inflate.findViewById(R.id.btn_eidtuser);
         btn_logout.setOnClickListener(this);
         btn_editpassword.setOnClickListener(this);
+        btn_eidtuser.setOnClickListener(this);
+
         persenter = new UserPersenterImpl(getContext(),this);
         initData();
         return inflate;
@@ -70,6 +75,9 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
             case R.id.btn_logout:
                 persenter.logout();
                 break;
+            case R.id.btn_eidtuser:
+                persenter.switchToEditUserInfo();
+                break;
             case R.id.btn_editpassword:
                 persenter.switchToEditPassword();
                 break;
@@ -83,6 +91,16 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
 
     @Override
     public UserDTO getUser() {
+        if(userDTO == null) {
+            userDTO = new UserDTO();
+            CarDTO carDTO = new CarDTO();
+            carDTO.setCname((String) SPUtils.getParam(getContext(),"cname",""));
+            carDTO.setCtype((String) SPUtils.getParam(getContext(),"ctype",""));
+            carDTO.setCproduct((String) SPUtils.getParam(getContext(),"cproduct",""));
+            carDTO.setCdisplacement((String) SPUtils.getParam(getContext(),"cdisplacement",""));
+            userDTO.setCarDTO(carDTO);
+            userDTO.setUname((String) SPUtils.getParam(getContext(),"uname",""));
+        }
         return userDTO;
     }
 }

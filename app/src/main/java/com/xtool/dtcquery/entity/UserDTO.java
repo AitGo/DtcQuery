@@ -10,6 +10,7 @@ public class UserDTO {
     private String uname;
     private String upassword;
     private String islogin;
+    private CarDTO carDTO;
 
     public String getIslogin() {
         return islogin;
@@ -26,8 +27,6 @@ public class UserDTO {
     public void setUpassword(String upassword) {
         this.upassword = upassword;
     }
-
-    private CarDTO carDTO;
 
     public CarDTO getCarDTO() {
         return carDTO;

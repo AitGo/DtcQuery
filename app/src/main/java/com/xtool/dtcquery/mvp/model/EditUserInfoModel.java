@@ -7,9 +7,9 @@ import java.util.List;
 import io.reactivex.Observable;
 
 /**
- * Created by xtool on 2017/10/11.
+ * Created by xtool on 2017/10/12.
  */
 
-public interface LogoutModel {
-    Observable<List<UserDTO>> userLogoutByPost(UserDTO userDTO);
+public interface EditUserInfoModel {
+    Observable<List<UserDTO>> editUserInfoByPost(UserDTO userDTO);
 }

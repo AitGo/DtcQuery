@@ -6,6 +6,7 @@ import android.util.Log;
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
 import com.xtool.dtcquery.entity.DtcDTO;
+import com.xtool.dtcquery.entity.RecyclerBean;
 import com.xtool.dtcquery.mvp.model.MainModel;
 import com.xtool.dtcquery.mvp.model.MainModelImpl;
 import com.xtool.dtcquery.mvp.view.MainView;
@@ -51,7 +52,17 @@ public class MainPersenterImpl implements MainPersenter {
                     @Override
                     public void onNext(@NonNull List<DtcDTO> dtcDTOList) {
                         Log.e(TAG,"onNext");
-                        doNext(dtcDTOList);
+                        if(dtcDTOList.size() > 0) {
+//            view.showListMeg(dtcDTOList);
+                            RecyclerBean recyclerBean = getRecyclerBean(dtcDTOList);
+
+                            view.getRecyclerAdatper().updateList(dtcDTOList, true);
+                            view.showListTitle();
+                        }else {
+                            view.dismissListTitle();
+                            view.showToast(context.getString(R.string.nodcode));
+                        }
+                        view.dismissProgressDialog();
                     }
 
                     @Override
@@ -113,7 +124,7 @@ public class MainPersenterImpl implements MainPersenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.e(TAG,"onError: "+ e.getMessage());
+                        e.printStackTrace();
                     }
 
                     @Override
@@ -138,16 +149,19 @@ public class MainPersenterImpl implements MainPersenter {
         view.showToast(context.getString(R.string.nointernet));
     }
 
-    private void doNext(List<DtcDTO> dtcDTOList) {
-        if(dtcDTOList.size() > 0) {
-//            view.showListMeg(dtcDTOList);
-            view.getRecyclerAdatper().updateList(dtcDTOList, true);
-            view.showListTitle();
-        }else {
-            view.dismissListTitle();
-            view.showToast(context.getString(R.string.nodcode));
+    private RecyclerBean getRecyclerBean(List<DtcDTO> dtcDTOList) {
+        RecyclerBean recyclerBean = new RecyclerBean();
+        for(int i = 0; i < dtcDTOList.size(); i++) {
+            RecyclerBean childBean = new RecyclerBean();
+            recyclerBean.setId(i+"");
+            recyclerBean.setDcode(dtcDTOList.get(i).getDcode());
+            recyclerBean.setDname(dtcDTOList.get(i).getDname());
+            childBean.setDinfo(dtcDTOList.get(i).getDinfo());
+            childBean.setDcause(dtcDTOList.get(i).getDcause());
+            childBean.setDfix(dtcDTOList.get(i).getDfix());
+            recyclerBean.setChildBean(childBean);
         }
-        view.dismissProgressDialog();
+        return recyclerBean;
     }
 
 }

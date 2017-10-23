@@ -9,13 +9,13 @@ import java.util.List;
 import io.reactivex.Observable;
 
 /**
- * Created by xtool on 2017/10/11.
+ * Created by xtool on 2017/10/12.
  */
 
-public class LogoutModelImpl implements LogoutModel {
+public class EditUserInfoModelImpl implements EditUserInfoModel {
     @Override
-    public Observable<List<UserDTO>> userLogoutByPost(UserDTO userDTO) {
+    public Observable<List<UserDTO>> editUserInfoByPost(UserDTO userDTO) {
         return ServiceFactory.getInstance().createService(PostActivation.class)
-                .postUserLogout(userDTO);
+                .postEditUserInfo(userDTO);
     }
 }

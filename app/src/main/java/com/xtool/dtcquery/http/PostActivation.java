@@ -28,7 +28,17 @@ public interface PostActivation {
     Observable<List<UserDTO>> postUserLogin(@Body UserDTO userDTO);
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("app/userLogout.action")
+    Observable<List<UserDTO>> postUserLogout(@Body UserDTO userDTO);
+
+    @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("app/upasswordUpdate.action")
     Observable<List<UserDTO>> postEditPassword(@Body UserDTO userDTO);
+
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("app/userinfoUpdate.action")
+    Observable<List<UserDTO>> postEditUserInfo(@Body UserDTO userDTO);
+
+
 
 }

@@ -9,6 +9,7 @@ import com.xtool.dtcquery.mvp.model.EditPasswordModel;
 import com.xtool.dtcquery.mvp.model.EditPasswordModelImpl;
 import com.xtool.dtcquery.mvp.view.EditPasswordFragment;
 import com.xtool.dtcquery.mvp.view.EditPasswordView;
+import com.xtool.dtcquery.mvp.view.LoginFragment;
 import com.xtool.dtcquery.mvp.view.UserFragment;
 
 import java.util.List;
@@ -55,13 +56,13 @@ public class EditPasswordPersenterImpl implements EditPasswordPersenter {
             UserDTO userDTO = new UserDTO();
             userDTO.setUname(view.getUserName());
             userDTO.setUpassword(getNewPassword());
+            userDTO.setIslogin("login");
             model.editPasswordByPost(userDTO)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableObserver<List<UserDTO>>() {
                         @Override
                         public void onNext(@NonNull List<UserDTO> userDTOs) {
-
                             view.dismissProgressDialog();
                             view.showToast(context.getString(R.string.editsuccess));
                             view.switchFragment(new UserFragment(userDTOs.get(0)));
@@ -87,5 +88,10 @@ public class EditPasswordPersenterImpl implements EditPasswordPersenter {
             view.setNewPassword2("");
             view.dismissProgressDialog();
         }
+    }
+
+    @Override
+    public void switchLoginFragment() {
+        view.switchFragment(new UserFragment());
     }
 }

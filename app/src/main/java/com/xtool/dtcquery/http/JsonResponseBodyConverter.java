@@ -33,12 +33,16 @@ public class JsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
 
 
     @Override
-    public T convert(ResponseBody value) throws IOException{
+    public T convert(ResponseBody value) throws IOException {
         String StrRes = value.string();
         Log.e("返回的Json", StrRes);
-        MessageDTO<T> messageDTO = gson.fromJson(StrRes, new TypeToken<MessageDTO<T>>() {}.getType());
-        if(messageDTO.getCode() != 0) {
+        MessageDTO<T> messageDTO = gson.fromJson(StrRes, new TypeToken<MessageDTO<T>>() {
+        }.getType());
+        if (messageDTO.getCode() != 0) {
             throw new IOException(messageDTO.getMsg());
+        }
+        if (messageDTO.getData() == null) {
+            throw new IOException("data is null");
         }
         String dataJson = gson.toJson(messageDTO.getData());
         List list = (List) adapter.fromJson(dataJson);
@@ -51,7 +55,7 @@ public class JsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
                 byte[] dekey = Base64Utils.decode(key.toString());
                 byte[] keybyte = RSAUtils.decryptByPublicKey(dekey, publicKey);
                 String AESKey = new String(keybyte);
-                CodingUtils.DeCoding(object,AESKey);
+                CodingUtils.DeCoding(object, AESKey);
             } catch (Exception e) {
                 throw new IOException(e);
             }

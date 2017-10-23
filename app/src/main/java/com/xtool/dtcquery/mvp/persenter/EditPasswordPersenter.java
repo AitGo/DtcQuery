@@ -7,4 +7,6 @@ package com.xtool.dtcquery.mvp.persenter;
 public interface EditPasswordPersenter {
 
     void editPassword();
+
+    void switchLoginFragment();
 }

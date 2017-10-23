@@ -19,11 +19,12 @@ import io.reactivex.functions.Consumer;
  * Created by xtool on 2017/9/14.
  */
 
-public class LoginFragment extends BaseFragment implements View.OnClickListener,LoginView{
+public class LoginFragment  extends BaseFragment implements View.OnClickListener,LoginView{
 
     private Button btn_login;
     private Button btn_cancel;
     private Button btn_register;
+
 
     private EditText et_uname;
     private EditText et_upassword;
@@ -58,11 +59,12 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
                 persenter.login();
                 break;
             case R.id.btn_cancel:
-
+                persenter.closeDrawer();
                 break;
             case R.id.btn_register:
 
                 break;
+
         }
     }
 
@@ -84,5 +86,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void switchUserFragment(UserDTO userDTO) {
         ((MainActivity)getActivity()).switchFragment(new UserFragment(userDTO));
+    }
+
+    @Override
+    public void closeDrawer() {
+        ((MainActivity)getActivity()).closeDrawer();
     }
 }

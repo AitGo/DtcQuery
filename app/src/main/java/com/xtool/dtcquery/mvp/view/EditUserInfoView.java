@@ -2,16 +2,18 @@ package com.xtool.dtcquery.mvp.view;
 
 import android.support.v4.app.Fragment;
 
+import com.xtool.dtcquery.entity.CarDTO;
 import com.xtool.dtcquery.entity.UserDTO;
 
 /**
- * Created by xtool on 2017/9/14.
+ * Created by xtool on 2017/10/12.
  */
 
-public interface LoginView {
-    String getUname();
+public interface EditUserInfoView {
 
-    String getUpassword();
+    CarDTO getCarDTO();
+
+    UserDTO getUserDTO();
 
     void showProgressDialog();
 
@@ -20,9 +22,4 @@ public interface LoginView {
     void showToast(String msg);
 
     void switchFragment(Fragment fragment);
-
-    void switchUserFragment(UserDTO userDTO);
-
-    void closeDrawer();
-
 }

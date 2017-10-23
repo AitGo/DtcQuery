@@ -6,4 +6,6 @@ package com.xtool.dtcquery.mvp.persenter;
 
 public interface LoginPersenter {
     void login();
+
+    void closeDrawer();
 }

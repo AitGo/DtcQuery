@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -20,10 +21,13 @@ import android.widget.Toast;
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
 import com.xtool.dtcquery.base.BaseActivity;
+import com.xtool.dtcquery.entity.CarDTO;
 import com.xtool.dtcquery.entity.DtcDTO;
+import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.persenter.MainPersenter;
 import com.xtool.dtcquery.mvp.persenter.MainPersenterImpl;
 import com.xtool.dtcquery.utils.RxBus;
+import com.xtool.dtcquery.utils.SPUtils;
 import com.xtool.dtcquery.widget.DividerGridItemDecoration;
 
 import java.util.ArrayList;
@@ -55,10 +59,28 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         setContentView(R.layout.activity_main);
         initView();
         persenter = new MainPersenterImpl(this,this);
-        LoginFragment loginFragment = new LoginFragment();
-        transaction.add(R.id.fl_left,loginFragment,"login");
-        transaction.show(loginFragment);
-        transaction.commit();
+        //判断是否登录，显示不同fragment
+        String uname = (String) SPUtils.getParam(this,"uname","");
+        if(uname != null && !uname.equals("")) {
+            CarDTO carDTO = new CarDTO();
+            UserDTO userDTO = new UserDTO();
+            carDTO.setCname((String) SPUtils.getParam(this,"cname",""));
+            carDTO.setCtype((String) SPUtils.getParam(this,"ctype",""));
+            carDTO.setCproduct((String) SPUtils.getParam(this,"cproduct",""));
+            carDTO.setCdisplacement((String) SPUtils.getParam(this,"cdisplacement",""));
+            userDTO.setCarDTO(carDTO);
+            userDTO.setUname(uname);
+
+            UserFragment userFragment = new UserFragment(userDTO);
+            transaction.add(R.id.fl_left,userFragment,"user");
+            transaction.show(userFragment);
+            transaction.commit();
+        }else {
+            LoginFragment loginFragment = new LoginFragment();
+            transaction.add(R.id.fl_left,loginFragment,"login");
+            transaction.show(loginFragment);
+            transaction.commit();
+        }
 
     }
 
@@ -80,17 +102,11 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         RxBus.getInstance().subscribe(String.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
-//                if(o.toString().equals("发送事件1"))
+                if(o.toString().equals("发送事件1"))
                     Toast.makeText(getApplicationContext(),"1234",Toast.LENGTH_LONG).show();
             }
         });
-        RxBus.getInstance().subscribe(String.class, new Consumer() {
-            @Override
-            public void accept(Object o) throws Exception {
-//                if(o.toString().equals("发送事件1"))
-                btn_query.setText("2134");
-            }
-        });
+
 
     }
 
@@ -168,6 +184,11 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
     @Override
     public void showDrawer() {
         dl_left.openDrawer(Gravity.LEFT);
+    }
+
+    @Override
+    public void closeDrawer() {
+        dl_left.closeDrawer(Gravity.LEFT);
     }
 
     @Override

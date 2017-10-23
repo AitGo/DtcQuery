@@ -10,31 +10,32 @@
         android:src="@mipmap/user"
         android:layout_gravity="center_horizontal"/>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:orientation="horizontal"
-        android:background="@drawable/bg_edittext_black">
+        android:background="@drawable/bg_edittext_black"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="用户名"
-            android:textSize="18sp"
             android:textColor="@color/white"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tv_uname"
+        <EditText
+            android:id="@+id/et_uname"
             android:layout_width="300dp"
             android:layout_height="50dp"
+            android:gravity="center_vertical"
             android:paddingLeft="15dp"
-            android:text="11111"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:gravity="center_vertical"/>
-        </LinearLayout>
+            android:textSize="18sp" />
+    </LinearLayout>
+-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,8 +51,8 @@
             android:textColor="@color/white"
             android:layout_gravity="center_vertical"/>
 
-        <TextView
-            android:id="@+id/tv_cname"
+        <EditText
+            android:id="@+id/et_cname"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
@@ -61,32 +62,34 @@
             android:textSize="18sp"
             />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:orientation="horizontal"
-        android:background="@drawable/bg_edittext_black">
+        android:background="@drawable/bg_edittext_black"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="品牌"
-            android:textSize="18sp"
             android:textColor="@color/white"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tv_ctype"
+        <EditText
+            android:id="@+id/et_ctype"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:paddingLeft="5dp"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="18sp"
-            />
+            android:textSize="18sp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,13 +100,13 @@
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="用户名"
+            android:text="生产"
             android:textSize="18sp"
             android:textColor="@color/white"
             android:layout_gravity="center_vertical"/>
 
-        <TextView
-            android:id="@+id/tv_cproduct"
+        <EditText
+            android:id="@+id/et_cproduct"
             android:layout_width="300dip"
             android:layout_height="50dip"
             android:layout_marginTop="20dip"
@@ -126,8 +129,8 @@
             android:textSize="18sp"
             android:textColor="@color/white"
             android:layout_gravity="center_vertical"/>
-        <TextView
-            android:id="@+id/tv_cdisplacement"
+        <EditText
+            android:id="@+id/et_cdisplacement"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
@@ -141,23 +144,20 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_logout"
+        android:id="@+id/btn_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="退出登录"/>
-
-    <Button
-        android:id="@+id/btn_eidtuser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="修改信息"/>
-
-    <Button
-        android:id="@+id/btn_editpassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/editpassword"
+        android:text="确定"
         android:textSize="18sp"
         android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="取消"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
 
 </LinearLayout>
