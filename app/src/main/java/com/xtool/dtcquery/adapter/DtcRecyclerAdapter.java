@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.entity.DtcDTO;
+import com.xtool.dtcquery.entity.RecyclerBean;
 import com.xtool.dtcquery.utils.AnimationUtils;
 
 import java.util.ArrayList;

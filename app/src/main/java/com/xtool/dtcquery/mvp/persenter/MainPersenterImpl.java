@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.xtool.dtcquery.R;
+import com.xtool.dtcquery.adapter.BrvahDtcRecyclerAdapter;
 import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
 import com.xtool.dtcquery.entity.DtcDTO;
 import com.xtool.dtcquery.entity.RecyclerBean;
@@ -56,10 +57,9 @@ public class MainPersenterImpl implements MainPersenter {
 //            view.showListMeg(dtcDTOList);
                             RecyclerBean recyclerBean = getRecyclerBean(dtcDTOList);
 
-                            view.getRecyclerAdatper().updateList(dtcDTOList, true);
-                            view.showListTitle();
+//                            view.getRecyclerAdatper().updateList(dtcDTOList, true);
+                            view.getRecyclerAdatper().addData(BrvahDtcRecyclerAdapter.getMultiItemList(dtcDTOList));
                         }else {
-                            view.dismissListTitle();
                             view.showToast(context.getString(R.string.nodcode));
                         }
                         view.dismissProgressDialog();
@@ -79,30 +79,12 @@ public class MainPersenterImpl implements MainPersenter {
     }
 
     @Override
-    public void onScrolled(int item) {
-        view.setLastVisibleItem(item);
-    }
-
-    @Override
-    public void onScrollStateChanged() {
-        final DtcRecyclerAdapter adapter = view.getRecyclerAdatper();
-        int lastVisibleItem = view.getLastVisibleItem();
-        if(adapter.isFadeTips() == false && lastVisibleItem +1 == adapter.getItemCount()) {
-            loadMore(adapter.getRealLastPosition(), PAGE_COUNT);
-        }
-        if (adapter.isFadeTips() == true && lastVisibleItem + 2 == adapter.getItemCount()) {
-            loadMore(adapter.getRealLastPosition(), PAGE_COUNT);
-        }
-
-    }
-
-    @Override
     public int getPAGE_COUNT() {
         return PAGE_COUNT;
     }
 
     // 上拉加载时调用的更新RecyclerView的方法
-    private void loadMore(int s ,int ps) {
+    public void loadMore(int s ,int ps) {
 //        view.showProgressDialog();
         String dcode = view.getDcode();
         DtcDTO dtcDTO = setDcodeToDtcCustom(dcode, s, ps);
@@ -116,15 +98,17 @@ public class MainPersenterImpl implements MainPersenter {
                         Log.e(TAG,"onNext");
                         if (dtcDTOList.size() > 0) {
                             // 然后传给Adapter，并设置hasMore为true
-                            view.getRecyclerAdatper().updateList(dtcDTOList, true);
+                            view.getRecyclerAdatper().addData(BrvahDtcRecyclerAdapter.getMultiItemList(dtcDTOList));
+                            view.getRecyclerAdatper().loadMoreComplete();
                         } else {
-                            view.getRecyclerAdatper().updateList(null, false);
+                            view.getRecyclerAdatper().loadMoreEnd();
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         e.printStackTrace();
+                        view.getRecyclerAdatper().loadMoreFail();
                     }
 
                     @Override
@@ -145,7 +129,6 @@ public class MainPersenterImpl implements MainPersenter {
 
     private void doError() {
         view.dismissProgressDialog();
-        view.dismissListTitle();
         view.showToast(context.getString(R.string.nointernet));
     }
 

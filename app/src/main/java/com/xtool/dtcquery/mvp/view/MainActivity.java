@@ -18,7 +18,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xtool.dtcquery.R;
+import com.xtool.dtcquery.adapter.BrvahDtcRecyclerAdapter;
 import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
 import com.xtool.dtcquery.base.BaseActivity;
 import com.xtool.dtcquery.entity.CarDTO;
@@ -47,11 +50,9 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
     private Button btn_query;
     private Button btn_left_menu;
     private EditText et_dcode;
-    private android.support.v7.widget.RecyclerView recyclerView;
-    private LinearLayout ll_list_title;
-    private DtcRecyclerAdapter adapter;
-    private List<DtcDTO> dtcDTOList = new ArrayList<DtcDTO>();
-    private List<DtcDTO> dtcDTOList1 = new ArrayList<DtcDTO>();
+    private RecyclerView recyclerView;
+    private BrvahDtcRecyclerAdapter adapter;
+    private List<MultiItemEntity> dtcDTOList = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -59,6 +60,11 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         setContentView(R.layout.activity_main);
         initView();
         persenter = new MainPersenterImpl(this,this);
+        initLeftFragment();
+        initRecyclerView();
+    }
+
+    private void initLeftFragment() {
         //判断是否登录，显示不同fragment
         String uname = (String) SPUtils.getParam(this,"uname","");
         if(uname != null && !uname.equals("")) {
@@ -81,7 +87,6 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
             transaction.show(loginFragment);
             transaction.commit();
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -92,13 +97,11 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         btn_left_menu = (Button) findViewById(R.id.btn_left_menu);
         et_dcode = (EditText) findViewById(R.id.et_dcode);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_dtc);
-        ll_list_title = (LinearLayout) findViewById(R.id.ll_list_title);
 
         btn_left_menu.setOnClickListener(this);
         btn_query.setOnClickListener(this);
 
-        initRecyclerView();
-        dismissListTitle();
+
         RxBus.getInstance().subscribe(String.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
@@ -115,33 +118,28 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         recyclerView.addItemDecoration(new DividerGridItemDecoration(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new DtcRecyclerAdapter(dtcDTOList1,this,false);
+        adapter = new BrvahDtcRecyclerAdapter(dtcDTOList);
+        adapter.openLoadAnimation();
+//        adapter.openLoadMore(5);
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                Log.e("111","load: " + adapter.getLoadMoreViewPosition());
+
+                persenter.loadMore(adapter.getLoadMoreViewPosition(),persenter.getPAGE_COUNT());
+            }
+        });
         mLayoutManager = new GridLayoutManager(this,1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    persenter.onScrollStateChanged();
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                persenter.onScrolled(mLayoutManager.findLastVisibleItemPosition());
-            }
-        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_query:
-                dtcDTOList1.clear();
+                dtcDTOList.clear();
                 adapter.notifyDataSetChanged();
                 persenter.query(0,persenter.getPAGE_COUNT());
                 break;
@@ -154,31 +152,19 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
     @Override
     public void showListMeg(List<DtcDTO> dtcDTOs) {
         dtcDTOList.clear();
-        dtcDTOList.addAll(dtcDTOs);
+        dtcDTOList.addAll(BrvahDtcRecyclerAdapter.getMultiItemList(dtcDTOs));
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void showListMoreMeg(List<DtcDTO> dtcDTOs) {
-        dtcDTOList.addAll(dtcDTOs);
+        dtcDTOList.addAll(BrvahDtcRecyclerAdapter.getMultiItemList(dtcDTOs));
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public String getDcode() {
         return et_dcode.getText().toString();
-    }
-
-    @Override
-    public void dismissListTitle() {
-        dtcDTOList.clear();
-        adapter.notifyDataSetChanged();
-        ll_list_title.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void showListTitle() {
-        ll_list_title.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -214,9 +200,9 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
     }
 
     @Override
-    public DtcRecyclerAdapter getRecyclerAdatper() {
+    public BrvahDtcRecyclerAdapter getRecyclerAdatper() {
         if(adapter == null) {
-            adapter = new DtcRecyclerAdapter(dtcDTOList1,this,false);
+            adapter = new BrvahDtcRecyclerAdapter(dtcDTOList);
         }
         return adapter;
     }

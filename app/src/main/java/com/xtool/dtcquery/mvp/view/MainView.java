@@ -2,6 +2,7 @@ package com.xtool.dtcquery.mvp.view;
 
 import android.support.v4.app.Fragment;
 
+import com.xtool.dtcquery.adapter.BrvahDtcRecyclerAdapter;
 import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
 import com.xtool.dtcquery.entity.DtcDTO;
 
@@ -23,10 +24,6 @@ public interface MainView {
 
     String getDcode();
 
-    void dismissListTitle();
-
-    void showListTitle();
-
     void showToast(String msg);
 
     void showDrawer();
@@ -41,6 +38,6 @@ public interface MainView {
 
     int getLastVisibleItem();
 
-    DtcRecyclerAdapter getRecyclerAdatper();
+    BrvahDtcRecyclerAdapter getRecyclerAdatper();
 
 }

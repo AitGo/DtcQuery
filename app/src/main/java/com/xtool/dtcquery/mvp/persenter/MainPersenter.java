@@ -8,9 +8,7 @@ public interface MainPersenter {
 
     void query(Integer s,Integer ps);
 
-    void onScrolled(int item);
-
-    void onScrollStateChanged();
-
     int getPAGE_COUNT();
+
+    void loadMore(int s ,int ps);
 }
