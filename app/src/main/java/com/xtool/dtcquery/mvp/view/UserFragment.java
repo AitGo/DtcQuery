@@ -85,11 +85,6 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
     }
 
     @Override
-    public void switchFragment(Fragment fragment) {
-        ((MainActivity)getActivity()).switchFragment(fragment);
-    }
-
-    @Override
     public UserDTO getUser() {
         if(userDTO == null) {
             userDTO = new UserDTO();

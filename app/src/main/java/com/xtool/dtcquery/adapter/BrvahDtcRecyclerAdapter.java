@@ -64,6 +64,11 @@ public class BrvahDtcRecyclerAdapter extends BaseMultiItemQuickAdapter<MultiItem
         }
     }
 
+    /**
+     * DtcDTO转MultiItemEntity
+     * @param dtcList
+     * @return
+     */
     public static List<MultiItemEntity> getMultiItemList(List<DtcDTO> dtcList) {
         ArrayList<MultiItemEntity> multiItemEntities = new ArrayList<>();
         for(int i = 0; i < dtcList.size(); i++) {

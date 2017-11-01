@@ -79,8 +79,4 @@ public class EditPasswordFragment extends BaseFragment implements View.OnClickLi
         et_newpassword2.setText(s);
     }
 
-    @Override
-    public void switchFragment(Fragment fragment) {
-        ((MainActivity)getActivity()).switchFragment(fragment);
-    }
 }

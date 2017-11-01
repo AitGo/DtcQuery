@@ -8,4 +8,6 @@ public interface LoginPersenter {
     void login();
 
     void closeDrawer();
+
+    void switchInsertUser();
 }

@@ -102,13 +102,13 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         btn_query.setOnClickListener(this);
 
 
-        RxBus.getInstance().subscribe(String.class, new Consumer() {
-            @Override
-            public void accept(Object o) throws Exception {
-                if(o.toString().equals("发送事件1"))
-                    Toast.makeText(getApplicationContext(),"1234",Toast.LENGTH_LONG).show();
-            }
-        });
+//        RxBus.getInstance().subscribe(String.class, new Consumer() {
+//            @Override
+//            public void accept(Object o) throws Exception {
+//                if(o.toString().equals("发送事件1"))
+//                    Toast.makeText(getApplicationContext(),"1234",Toast.LENGTH_LONG).show();
+//            }
+//        });
 
 
     }
@@ -120,12 +120,9 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
 
         adapter = new BrvahDtcRecyclerAdapter(dtcDTOList);
         adapter.openLoadAnimation();
-//        adapter.openLoadMore(5);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                Log.e("111","load: " + adapter.getLoadMoreViewPosition());
-
                 persenter.loadMore(adapter.getLoadMoreViewPosition(),persenter.getPAGE_COUNT());
             }
         });
@@ -140,7 +137,7 @@ public class MainActivity extends BaseActivity implements MainView,View.OnClickL
         switch (v.getId()) {
             case R.id.btn_query:
                 dtcDTOList.clear();
-                adapter.notifyDataSetChanged();
+                adapter.setNewData(dtcDTOList);
                 persenter.query(0,persenter.getPAGE_COUNT());
                 break;
             case R.id.btn_left_menu:

@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 import com.xtool.dtcquery.base.BaseFragmentView;
 
 /**
- * Created by xtool on 2017/10/9.
+ * Created by xtool on 2017/10/31.
  */
 
-public interface EditPasswordView extends BaseFragmentView{
+public interface InsertUserView extends BaseFragmentView{
 
     String getNewPassword();
 
@@ -19,4 +19,5 @@ public interface EditPasswordView extends BaseFragmentView{
     void setNewPassword(String s);
 
     void setNewPassword2(String s);
+
 }

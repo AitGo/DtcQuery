@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.xtool.dtcquery.adapter.BrvahDtcRecyclerAdapter;
 import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
+import com.xtool.dtcquery.base.BaseView;
 import com.xtool.dtcquery.entity.DtcDTO;
 
 import java.util.List;
@@ -12,19 +13,13 @@ import java.util.List;
  * Created by xtool on 2017/9/7.
  */
 
-public interface MainView {
-
-    void showProgressDialog();
-
-    void dismissProgressDialog();
+public interface MainView extends BaseView{
 
     void showListMeg(List<DtcDTO> dtcDTOs);
 
     void showListMoreMeg(List<DtcDTO> dtcDTOs);
 
     String getDcode();
-
-    void showToast(String msg);
 
     void showDrawer();
 

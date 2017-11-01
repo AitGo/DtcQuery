@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.xtool.dtcquery.mvp.view.MainActivity;
 import com.xtool.dtcquery.utils.RxBus;
 import com.xtool.dtcquery.widget.ProgressDialog;
 
@@ -15,7 +16,7 @@ import com.xtool.dtcquery.widget.ProgressDialog;
  * Created by xtool on 2017/9/14.
  */
 
-public abstract class BaseFragment extends Fragment implements BaseView{
+public abstract class BaseFragment extends Fragment implements BaseFragmentView{
     private ProgressDialog progressDialog;
 
     @Nullable
@@ -41,10 +42,15 @@ public abstract class BaseFragment extends Fragment implements BaseView{
         progressDialog.dismiss();
     }
 
-    @Override
+
     public void showToast(String msg) {
         Toast.makeText(getContext(),msg,Toast.LENGTH_LONG).show();
     }
 
     protected abstract View initView(LayoutInflater inflater);
+
+    @Override
+    public void switchFragment(Fragment fragment) {
+        ((MainActivity)getActivity()).switchFragment(fragment);
+    }
 }

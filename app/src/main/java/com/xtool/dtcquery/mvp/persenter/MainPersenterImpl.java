@@ -54,10 +54,6 @@ public class MainPersenterImpl implements MainPersenter {
                     public void onNext(@NonNull List<DtcDTO> dtcDTOList) {
                         Log.e(TAG,"onNext");
                         if(dtcDTOList.size() > 0) {
-//            view.showListMeg(dtcDTOList);
-                            RecyclerBean recyclerBean = getRecyclerBean(dtcDTOList);
-
-//                            view.getRecyclerAdatper().updateList(dtcDTOList, true);
                             view.getRecyclerAdatper().addData(BrvahDtcRecyclerAdapter.getMultiItemList(dtcDTOList));
                         }else {
                             view.showToast(context.getString(R.string.nodcode));
@@ -101,7 +97,7 @@ public class MainPersenterImpl implements MainPersenter {
                             view.getRecyclerAdatper().addData(BrvahDtcRecyclerAdapter.getMultiItemList(dtcDTOList));
                             view.getRecyclerAdatper().loadMoreComplete();
                         } else {
-                            view.getRecyclerAdatper().loadMoreEnd();
+                            view.getRecyclerAdatper().loadMoreEnd(false);
                         }
                     }
 

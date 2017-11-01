@@ -78,8 +78,4 @@ public class EditUserInfoFragment extends BaseFragment implements EditUserInfoVi
         return userDTO;
     }
 
-    @Override
-    public void switchFragment(Fragment fragment) {
-        ((MainActivity)getActivity()).switchFragment(fragment);
-    }
 }

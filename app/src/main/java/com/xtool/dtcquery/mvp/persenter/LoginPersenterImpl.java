@@ -8,6 +8,7 @@ import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.model.LoginModel;
 import com.xtool.dtcquery.mvp.model.LoginModelImpl;
 import com.xtool.dtcquery.mvp.view.EditPasswordFragment;
+import com.xtool.dtcquery.mvp.view.InsertUserFragment;
 import com.xtool.dtcquery.mvp.view.LoginView;
 import com.xtool.dtcquery.utils.SPUtils;
 
@@ -106,5 +107,10 @@ public class LoginPersenterImpl implements LoginPersenter {
     @Override
     public void closeDrawer() {
         view.closeDrawer();
+    }
+
+    @Override
+    public void switchInsertUser() {
+        view.switchFragment(new InsertUserFragment());
     }
 }

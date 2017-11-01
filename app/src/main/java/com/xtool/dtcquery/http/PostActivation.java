@@ -17,7 +17,7 @@ import retrofit2.http.POST;
 
 public interface PostActivation {
 
-    String BASE_URL = "http://192.168.137.1:8080/DtcQuery/";
+    String BASE_URL = "http://192.168.140.1:8080/DtcQuery/";
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("app/queryDtcByDcodeJson.action")
@@ -39,6 +39,8 @@ public interface PostActivation {
     @POST("app/userinfoUpdate.action")
     Observable<List<UserDTO>> postEditUserInfo(@Body UserDTO userDTO);
 
-
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("app/userInsert.action")
+    Observable<List<UserDTO>> postInsertUser(@Body UserDTO userDTO);
 
 }

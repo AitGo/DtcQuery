@@ -62,7 +62,7 @@ public class LoginFragment  extends BaseFragment implements View.OnClickListener
                 persenter.closeDrawer();
                 break;
             case R.id.btn_register:
-
+                persenter.switchInsertUser();
                 break;
 
         }
@@ -76,11 +76,6 @@ public class LoginFragment  extends BaseFragment implements View.OnClickListener
     @Override
     public String getUpassword() {
         return et_upassword.getText().toString().trim();
-    }
-
-    @Override
-    public void switchFragment(Fragment fragment) {
-        ((MainActivity)getActivity()).switchFragment(fragment);
     }
 
     @Override
