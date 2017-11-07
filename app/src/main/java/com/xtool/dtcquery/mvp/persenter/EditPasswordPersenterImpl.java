@@ -71,8 +71,7 @@ public class EditPasswordPersenterImpl implements EditPasswordPersenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             e.printStackTrace();
-//                            Log.e("123",e.getMessage());
-                            view.showToast("111");
+                            view.showToast("修改失败");
                             view.dismissProgressDialog();
                         }
 

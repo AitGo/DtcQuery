@@ -3,6 +3,7 @@ package com.xtool.dtcquery.mvp.persenter;
 import android.content.Context;
 import android.util.Log;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.adapter.BrvahDtcRecyclerAdapter;
 import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
@@ -42,7 +43,10 @@ public class MainPersenterImpl implements MainPersenter {
     @Override
     public void query(final Integer s, Integer ps) {
         view.showProgressDialog();
-        RxBus.getInstance().send("发送事件");
+        List<MultiItemEntity> list = view.getDtcList();
+        list.clear();
+        view.getRecyclerAdatper().setNewData(list);
+//        RxBus.getInstance().send("发送事件");
         String dcode = view.getDcode();
         DtcDTO dtcDTO = setDcodeToDtcCustom(dcode, s, ps);
 
@@ -112,6 +116,11 @@ public class MainPersenterImpl implements MainPersenter {
                         Log.e(TAG,"onComplete");
                     }
                 });
+    }
+
+    @Override
+    public void showDrawer() {
+        view.showDrawer();
     }
 
     private DtcDTO setDcodeToDtcCustom(String dcode, Integer s, Integer ps) {

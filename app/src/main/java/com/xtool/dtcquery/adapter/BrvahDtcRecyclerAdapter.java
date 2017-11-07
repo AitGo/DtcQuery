@@ -1,6 +1,10 @@
 package com.xtool.dtcquery.adapter;
 
+import android.content.Context;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -22,6 +26,7 @@ public class BrvahDtcRecyclerAdapter extends BaseMultiItemQuickAdapter<MultiItem
 
     public static final int TYPE_CATEGORY = 0;
     public static final int TYPE_SUBCATEGORY = 1;
+    private Animation operatingAnim;
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -40,26 +45,27 @@ public class BrvahDtcRecyclerAdapter extends BaseMultiItemQuickAdapter<MultiItem
         switch (helper.getItemViewType()) {
             case TYPE_CATEGORY:
                 final Category category = (Category) item;
-                helper.setText(R.id.tv_dcode,((Category) item).getDcode())
-                        .setText(R.id.tv_dname,((Category) item).getDname());
+                helper.setText(R.id.tv_dcode,category.getDcode())
+                        .setText(R.id.tv_dname,category.getDname());
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int pos = helper.getLayoutPosition();
                         if(category.isExpanded()) {
                             collapse(pos);
-//                            helper.getView(R.id.expend).set
+//                            helper.getView(R.id.expend).setRotation(0);
                         }else {
                             expand(pos);
+//                            helper.getView(R.id.expend).setRotation(90);
                         }
                     }
                 });
                 break;
             case TYPE_SUBCATEGORY:
                 SubCategory subCategory = (SubCategory) item;
-                helper.setText(R.id.tv_dinfo,((SubCategory) item).getDinfo())
-                        .setText(R.id.tv_dcause,((SubCategory) item).getDcase())
-                        .setText(R.id.tv_dfix,((SubCategory) item).getDfix());
+                helper.setText(R.id.tv_dinfo,subCategory.getDinfo())
+                        .setText(R.id.tv_dcause,subCategory.getDcase())
+                        .setText(R.id.tv_dfix,subCategory.getDfix());
                 break;
         }
     }

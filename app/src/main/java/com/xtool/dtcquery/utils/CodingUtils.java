@@ -2,6 +2,7 @@ package com.xtool.dtcquery.utils;
 
 import android.util.Log;
 
+import com.xtool.dtcquery.entity.Key;
 import com.xtool.dtcquery.entity.UserDTO;
 
 import java.lang.reflect.Field;
@@ -25,8 +26,8 @@ public class CodingUtils {
 			if(object != null && !object.equals("")) {
 				if(field.getName().equals(keyName)) {
 					//RSA
-					String publicKey = RSAUtils.getKey(ContextUtil.getInstance().getAssets().open(publicKeyName));
-					byte[] endata = RSAUtils.encryptByPublicKey(uuid.getBytes(), publicKey);
+//					String publicKey = RSAUtils.getKey(ContextUtil.getInstance().getAssets().open(publicKeyName));
+					byte[] endata = RSAUtils.encryptByPublicKey(uuid.getBytes(), Key.key);
 					String encode = Base64Utils.encode(endata);
 					field.set(t, encode);
 				}else {

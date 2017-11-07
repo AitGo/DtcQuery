@@ -11,4 +11,6 @@ public interface MainPersenter {
     int getPAGE_COUNT();
 
     void loadMore(int s ,int ps);
+
+    void showDrawer();
 }

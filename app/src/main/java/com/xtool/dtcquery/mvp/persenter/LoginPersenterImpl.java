@@ -78,6 +78,7 @@ public class LoginPersenterImpl implements LoginPersenter {
                         public void onError(@NonNull Throwable e) {
                             Log.e(TAG,"onError");
                             e.printStackTrace();
+                            view.showToast("登录失败");
                             view.dismissProgressDialog();
                         }
 

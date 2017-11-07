@@ -56,6 +56,7 @@ public class EditUserInfoPersenterImpl implements EditUserInfoPersenter {
                     public void onNext(@NonNull List<UserDTO> userDTOs) {
                         view.switchFragment(new UserFragment(userDTOs.get(0)));
                         view.dismissProgressDialog();
+                        view.showToast("修改信息成功");
                     }
 
                     @Override

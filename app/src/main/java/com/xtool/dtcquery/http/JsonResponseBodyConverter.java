@@ -5,10 +5,10 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.xtool.dtcquery.entity.Key;
 import com.xtool.dtcquery.entity.MessageDTO;
 import com.xtool.dtcquery.utils.Base64Utils;
 import com.xtool.dtcquery.utils.CodingUtils;
-import com.xtool.dtcquery.utils.ContextUtil;
 import com.xtool.dtcquery.utils.RSAUtils;
 
 import java.io.IOException;
@@ -51,9 +51,8 @@ public class JsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
                 Field field = object.getClass().getDeclaredField("key");
                 field.setAccessible(true);
                 Object key = field.get(object);
-                String publicKey = RSAUtils.getKey(ContextUtil.getInstance().getAssets().open("publicKey.cer"));
                 byte[] dekey = Base64Utils.decode(key.toString());
-                byte[] keybyte = RSAUtils.decryptByPublicKey(dekey, publicKey);
+                byte[] keybyte = RSAUtils.decryptByPublicKey(dekey, Key.key);
                 String AESKey = new String(keybyte);
                 CodingUtils.DeCoding(object, AESKey);
             } catch (Exception e) {

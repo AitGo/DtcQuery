@@ -16,8 +16,14 @@ public interface InsertUserView extends BaseFragmentView{
 
     String getUserName();
 
+    String getSmsCode();
+
+    void setSmsCode(String s);
+
     void setNewPassword(String s);
 
     void setNewPassword2(String s);
+
+    void startCountDownTimer();
 
 }

@@ -44,27 +44,29 @@ public class UserPersenterImpl implements UserPersenter {
 
     @Override
     public void logout() {
+        view.showProgressDialog();
         //访问接口，改变登录状态
-
         logoutModel.userLogoutByPost(getUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<List<UserDTO>>() {
                     @Override
                     public void onNext(@NonNull List<UserDTO> list) {
-
                         //修改缓存
-                        SPUtils.setParam(context,"uname","");
-                        SPUtils.setParam(context,"cname","");
-                        SPUtils.setParam(context,"ctype","");
-                        SPUtils.setParam(context,"cproduct","");
-                        SPUtils.setParam(context,"cdisplacement","");
+                        SPUtils.setParam(context, "uname", "");
+                        SPUtils.setParam(context, "cname", "");
+                        SPUtils.setParam(context, "ctype", "");
+                        SPUtils.setParam(context, "cproduct", "");
+                        SPUtils.setParam(context, "cdisplacement", "");
                         //成功后切换界面
                         view.switchFragment(new LoginFragment());
+                        view.dismissProgressDialog();
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        view.showToast("退出登录失败，请检查网络后重试");
+                        view.dismissProgressDialog();
                         e.printStackTrace();
                     }
 
