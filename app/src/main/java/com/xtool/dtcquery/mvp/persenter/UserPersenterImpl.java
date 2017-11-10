@@ -2,6 +2,7 @@ package com.xtool.dtcquery.mvp.persenter;
 
 import android.content.Context;
 
+import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.model.LogoutModel;
 import com.xtool.dtcquery.mvp.model.LogoutModelImpl;
@@ -65,7 +66,7 @@ public class UserPersenterImpl implements UserPersenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        view.showToast("退出登录失败，请检查网络后重试");
+                        view.showToast(context.getString(R.string.logout_fail));
                         view.dismissProgressDialog();
                         e.printStackTrace();
                     }

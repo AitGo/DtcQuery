@@ -156,7 +156,7 @@
         android:id="@+id/btn_editpassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/editpassword"
+        android:text="@string/edit_password"
         android:textSize="18sp"
         android:textColor="@color/white"/>
 

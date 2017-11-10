@@ -17,12 +17,10 @@ import com.xtool.dtcquery.widget.ProgressDialog;
  */
 
 public abstract class BaseFragment extends Fragment implements BaseFragmentView{
-    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        progressDialog = new ProgressDialog(getContext());
         return initView(inflater);
     }
 
@@ -34,12 +32,12 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView{
 
     @Override
     public void showProgressDialog() {
-        progressDialog.show();
+        BaseActivity.progressDialog.show();
     }
 
     @Override
     public void dismissProgressDialog() {
-        progressDialog.dismiss();
+        BaseActivity.progressDialog.dismiss();
     }
 
 

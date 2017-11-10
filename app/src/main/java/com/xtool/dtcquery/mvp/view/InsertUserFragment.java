@@ -1,5 +1,6 @@
 package com.xtool.dtcquery.mvp.view;
 
+import android.annotation.SuppressLint;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,10 +10,15 @@ import android.widget.EditText;
 
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.base.BaseFragment;
+import com.xtool.dtcquery.entity.InsertUserEvent;
 import com.xtool.dtcquery.mvp.persenter.InsertUserPersenter;
 import com.xtool.dtcquery.mvp.persenter.InsertUserPersenterImpl;
+import com.xtool.dtcquery.utils.RxBus;
 
-import cn.smssdk.SMSSDK;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by xtool on 2017/10/31.
@@ -48,21 +54,34 @@ public class InsertUserFragment extends BaseFragment implements InsertUserView,V
 
         myCountDownTimer = new MyCountDownTimer(60000,1000);
         persenter = new InsertUserPersenterImpl(getContext(),this);
+        InsertUserEvent();
         return inflate;
 
+    }
+
+    private void InsertUserEvent() {
+        RxBus.getInstance().tObservable(InsertUserEvent.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<InsertUserEvent>() {
+                    @Override
+                    public void accept(InsertUserEvent insertUserEvent) throws Exception {
+                        persenter.regist();
+                    }
+                });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_regist:
-                persenter.regist();
+                persenter.checkSMSCode();
                 break;
             case R.id.btn_cancel:
                 persenter.switchLoginFragment();
                 break;
             case R.id.btn_sendcode:
-                persenter.sendSmsCode();
+                persenter.sendSMSCode();
                 break;
 
         }
@@ -80,6 +99,7 @@ public class InsertUserFragment extends BaseFragment implements InsertUserView,V
             super(millisInFuture, countDownInterval);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onTick(long millisUntilFinished) {
             btn_sendcode.setClickable(false);
@@ -88,7 +108,7 @@ public class InsertUserFragment extends BaseFragment implements InsertUserView,V
 
         @Override
         public void onFinish() {
-            btn_sendcode.setText("重新获取验证码");
+            btn_sendcode.setText(getString(R.string.send_again));
             btn_sendcode.setClickable(true);
         }
     }

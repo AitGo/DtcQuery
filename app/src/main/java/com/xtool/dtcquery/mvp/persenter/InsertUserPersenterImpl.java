@@ -2,6 +2,7 @@ package com.xtool.dtcquery.mvp.persenter;
 
 import android.content.Context;
 
+import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.model.InsertUserModel;
 import com.xtool.dtcquery.mvp.model.InsertUserModelImpl;
@@ -38,12 +39,32 @@ public class InsertUserPersenterImpl implements InsertUserPersenter {
     }
 
     @Override
-    public void regist() {
-        view.showProgressDialog();
+    public void checkSMSCode() {
         if (checkEdit() != null) {
+            view.showProgressDialog();
             SMSSDK.submitVerificationCode("86", view.getUserName(), view.getSmsCode());//提交短信验证码，在监听中返回
+        }else {
+            view.showToast(context.getString(R.string.edittext_not_empty));
+        }
+    }
+    /**
+     * 发送验证码
+     */
+    @Override
+    public void sendSMSCode() {
+        if(view.getUserName() != null && !view.getUserName().equals("")) {
+            view.startCountDownTimer();
+            SMSSDK.getVerificationCode("86",view.getUserName());
+        }else {
+            view.showToast(context.getString(R.string.phone_not_empty));
+        }
+    }
 
-            //验证码正确进行注册
+    /**
+     * 访问服务器注册
+     */
+    @Override
+    public void regist() {
             UserDTO userDTO = new UserDTO();
             userDTO.setUname(view.getUserName());
             userDTO.setUpassword(view.getNewPassword());
@@ -55,16 +76,14 @@ public class InsertUserPersenterImpl implements InsertUserPersenter {
 
                         @Override
                         public void onNext(@NonNull List<UserDTO> userDTOs) {
-                            view.showToast("注册成功！");
-
+                            view.showToast(context.getString(R.string.regist_success));
                             switchLoginFragment();
                             view.dismissProgressDialog();
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
-                            view.showToast("注册失败");
-                            switchLoginFragment();
+                            view.showToast(context.getString(R.string.regist_fail));
                             view.dismissProgressDialog();
                         }
 
@@ -73,20 +92,6 @@ public class InsertUserPersenterImpl implements InsertUserPersenter {
 
                         }
                     });
-        }
-    }
-    /**
-     * 发送验证码
-     */
-    @Override
-    public void sendSmsCode() {
-        if(view.getUserName() != null && !view.getUserName().equals("")) {
-            view.startCountDownTimer();
-            SMSSDK.getVerificationCode("86",view.getUserName());
-        }else {
-            view.showToast("手机号码不能为空");
-        }
-
     }
 
     /**

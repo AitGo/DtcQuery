@@ -7,15 +7,25 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.adapter.BrvahDtcRecyclerAdapter;
 import com.xtool.dtcquery.adapter.DtcRecyclerAdapter;
+import com.xtool.dtcquery.base.BaseFragment;
+import com.xtool.dtcquery.entity.CarDTO;
+import com.xtool.dtcquery.entity.DismissDialogEvent;
 import com.xtool.dtcquery.entity.DtcDTO;
+import com.xtool.dtcquery.entity.InsertUserEvent;
 import com.xtool.dtcquery.entity.RecyclerBean;
+import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.model.MainModel;
 import com.xtool.dtcquery.mvp.model.MainModelImpl;
+import com.xtool.dtcquery.mvp.view.LoginFragment;
 import com.xtool.dtcquery.mvp.view.MainView;
+import com.xtool.dtcquery.mvp.view.UserFragment;
 import com.xtool.dtcquery.utils.RxBus;
+import com.xtool.dtcquery.utils.SPUtils;
 
 import java.util.List;
 
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
@@ -34,7 +44,11 @@ public class MainPersenterImpl implements MainPersenter {
     private MainModel model;
     private Context context;
 
-    public MainPersenterImpl(Context context,MainView view) {
+    private EventHandler eventHandler;
+    public int smsFlage = 0;//0:设置为初始化值 1：请求获取验证码 2：提交用户输入的验证码判断是否正确
+
+
+    public MainPersenterImpl(Context context, MainView view) {
         this.view = view;
         this.context = context;
         model = new MainModelImpl();
@@ -56,24 +70,24 @@ public class MainPersenterImpl implements MainPersenter {
                 .subscribeWith(new DisposableObserver<List<DtcDTO>>() {
                     @Override
                     public void onNext(@NonNull List<DtcDTO> dtcDTOList) {
-                        Log.e(TAG,"onNext");
-                        if(dtcDTOList.size() > 0) {
+                        Log.e(TAG, "onNext");
+                        if (dtcDTOList.size() > 0) {
                             view.getRecyclerAdatper().addData(BrvahDtcRecyclerAdapter.getMultiItemList(dtcDTOList));
-                        }else {
-                            view.showToast(context.getString(R.string.nodcode));
+                        } else {
+                            view.showToast(context.getString(R.string.no_dcode));
                         }
                         view.dismissProgressDialog();
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.e(TAG,"onError: "+ e.getMessage());
+                        Log.e(TAG, "onError: " + e.getMessage());
                         doError();
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.e(TAG,"onComplete");
+                        Log.e(TAG, "onComplete");
                     }
                 });
     }
@@ -84,7 +98,7 @@ public class MainPersenterImpl implements MainPersenter {
     }
 
     // 上拉加载时调用的更新RecyclerView的方法
-    public void loadMore(int s ,int ps) {
+    public void loadMore(int s, int ps) {
 //        view.showProgressDialog();
         String dcode = view.getDcode();
         DtcDTO dtcDTO = setDcodeToDtcCustom(dcode, s, ps);
@@ -95,7 +109,7 @@ public class MainPersenterImpl implements MainPersenter {
                 .subscribeWith(new DisposableObserver<List<DtcDTO>>() {
                     @Override
                     public void onNext(@NonNull List<DtcDTO> dtcDTOList) {
-                        Log.e(TAG,"onNext");
+                        Log.e(TAG, "onNext");
                         if (dtcDTOList.size() > 0) {
                             // 然后传给Adapter，并设置hasMore为true
                             view.getRecyclerAdatper().addData(BrvahDtcRecyclerAdapter.getMultiItemList(dtcDTOList));
@@ -113,7 +127,7 @@ public class MainPersenterImpl implements MainPersenter {
 
                     @Override
                     public void onComplete() {
-                        Log.e(TAG,"onComplete");
+                        Log.e(TAG, "onComplete");
                     }
                 });
     }
@@ -121,6 +135,65 @@ public class MainPersenterImpl implements MainPersenter {
     @Override
     public void showDrawer() {
         view.showDrawer();
+    }
+
+    @Override
+    public void initSMS() {
+        // 创建EventHandler对象
+        eventHandler = new EventHandler() {
+            public void afterEvent(int event, int result, Object data) {
+                if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                    //回调完成
+                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                        //提交验证码成功
+                        RxBus.getInstance().send(context.getString(R.string.submit_smscode_success));
+                        //执行注册
+                        RxBus.getInstance().send(new InsertUserEvent());
+
+                    } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                        //获取验证码成功
+                        RxBus.getInstance().send(context.getString(R.string.get_smscode_success));
+                    } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
+                        //返回支持发送验证码的国家列表
+                    }
+                } else {
+                    ((Throwable) data).printStackTrace();
+                    //此语句代表接口返回失败
+                    RxBus.getInstance().send(context.getString(R.string.submit_smscode_fail));
+                    RxBus.getInstance().send(new DismissDialogEvent());
+                }
+            }
+        };
+        // 注册监听器
+        SMSSDK.registerEventHandler(eventHandler);
+    }
+
+    @Override
+    public void unregristSMS() {
+        SMSSDK.unregisterEventHandler(eventHandler);
+    }
+
+    @Override
+    public BaseFragment initLeftFragment() {
+        BaseFragment fragment;
+        //判断是否登录，显示不同fragment
+        String uname = (String) SPUtils.getParam(context, "uname", "");
+        if (uname != null && !uname.equals("")) {
+            CarDTO carDTO = new CarDTO();
+            UserDTO userDTO = new UserDTO();
+            carDTO.setCname((String) SPUtils.getParam(context, "cname", ""));
+            carDTO.setCtype((String) SPUtils.getParam(context, "ctype", ""));
+            carDTO.setCproduct((String) SPUtils.getParam(context, "cproduct", ""));
+            carDTO.setCdisplacement((String) SPUtils.getParam(context, "cdisplacement", ""));
+            userDTO.setCarDTO(carDTO);
+            userDTO.setUname(uname);
+
+            fragment = new UserFragment(userDTO);
+
+        } else {
+            fragment = new LoginFragment();
+        }
+        return fragment;
     }
 
     private DtcDTO setDcodeToDtcCustom(String dcode, Integer s, Integer ps) {
@@ -134,14 +207,14 @@ public class MainPersenterImpl implements MainPersenter {
 
     private void doError() {
         view.dismissProgressDialog();
-        view.showToast(context.getString(R.string.nointernet));
+        view.showToast(context.getString(R.string.no_internet));
     }
 
     private RecyclerBean getRecyclerBean(List<DtcDTO> dtcDTOList) {
         RecyclerBean recyclerBean = new RecyclerBean();
-        for(int i = 0; i < dtcDTOList.size(); i++) {
+        for (int i = 0; i < dtcDTOList.size(); i++) {
             RecyclerBean childBean = new RecyclerBean();
-            recyclerBean.setId(i+"");
+            recyclerBean.setId(i + "");
             recyclerBean.setDcode(dtcDTOList.get(i).getDcode());
             recyclerBean.setDname(dtcDTOList.get(i).getDname());
             childBean.setDinfo(dtcDTOList.get(i).getDinfo());

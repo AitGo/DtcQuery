@@ -64,14 +64,14 @@ public class EditPasswordPersenterImpl implements EditPasswordPersenter {
                         @Override
                         public void onNext(@NonNull List<UserDTO> userDTOs) {
                             view.dismissProgressDialog();
-                            view.showToast(context.getString(R.string.editsuccess));
+                            view.showToast(context.getString(R.string.edit_success));
                             view.switchFragment(new UserFragment(userDTOs.get(0)));
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
                             e.printStackTrace();
-                            view.showToast("修改失败");
+                            view.showToast(context.getString(R.string.edit_fail));
                             view.dismissProgressDialog();
                         }
 
@@ -82,7 +82,7 @@ public class EditPasswordPersenterImpl implements EditPasswordPersenter {
                     });
         }else {
             //输入有误，重新输入
-            view.showToast(context.getString(R.string.editagain));
+            view.showToast(context.getString(R.string.edit_again));
             view.setNewPassword("");
             view.setNewPassword2("");
             view.dismissProgressDialog();

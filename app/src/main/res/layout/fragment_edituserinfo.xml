@@ -147,7 +147,7 @@
         android:id="@+id/btn_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="确定"
+        android:text="@string/confirm"
         android:textSize="18sp"
         android:textColor="@color/white"/>
 
@@ -155,7 +155,7 @@
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="取消"
+        android:text="@string/cancel"
         android:textColor="@color/white"
         android:textSize="18sp" />
 

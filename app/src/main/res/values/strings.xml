@@ -7,8 +7,8 @@
     <string name="dfix">维修指导</string>
     <string name="dtccode">故障码编号</string>
     <string name="query">查询</string>
-    <string name="nointernet">网络连接失败!</string>
-    <string name="nodcode">没有该故障码编号!</string>
+    <string name="no_internet">网络连接失败!</string>
+    <string name="no_dcode">没有该故障码编号!</string>
     <string name="uname">用户名</string>
     <string name="upassword">密码</string>
     <string name="login">登录</string>
@@ -16,8 +16,23 @@
     <string name="register">注册</string>
     <string name="loadingmore">正在加载更多...</string>
     <string name="nomoredata">没有更多数据了</string>
-    <string name="editpassword">修改密码</string>
-    <string name="editsuccess">修改成功</string>
-    <string name="editagain">输入有误，请重新输入</string>
+    <string name="edit_password">修改密码</string>
+    <string name="edit_success">修改成功</string>
+    <string name="edit_again">输入有误，请重新输入</string>
     <string name="empty_uname_upassword">用户名或密码不能为空！</string>
+    <string name="regist_success">注册成功</string>
+    <string name="regist_fail">注册失败</string>
+    <string name="edit_fail">修改失败</string>
+    <string name="submit_smscode_fail">验证失败，请检查手机号重新发送</string>
+    <string name="submit_smscode_success">提交验证码成功</string>
+    <string name="get_smscode_success">获取验证码成功</string>
+    <string name="logout_fail">退出登录失败，请检查网络后重试</string>
+    <string name="send_again">重新获取</string>
+    <string name="login_fail">登录失败</string>
+    <string name="edittext_not_empty">输入项不能为空，请重新输入</string>
+    <string name="phone_not_empty">手机号码不能为空</string>
+    <string name="new_password">新密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="update_password">修改密码</string>
+    <string name="confirm">确定</string>
 </resources>

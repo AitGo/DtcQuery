@@ -21,7 +21,9 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.adapter.BrvahDtcRecyclerAdapter;
 import com.xtool.dtcquery.base.BaseActivity;
+import com.xtool.dtcquery.base.BaseFragment;
 import com.xtool.dtcquery.entity.CarDTO;
+import com.xtool.dtcquery.entity.DismissDialogEvent;
 import com.xtool.dtcquery.entity.Key;
 import com.xtool.dtcquery.entity.SubCategory;
 import com.xtool.dtcquery.entity.UserDTO;
@@ -61,23 +63,46 @@ public class MainActivity extends BaseActivity implements MainView, View.OnClick
     private RecyclerView recyclerView;
     private BrvahDtcRecyclerAdapter adapter;
     private List<MultiItemEntity> dtcDTOList = new ArrayList<>();
-    private EventHandler eventHandler;
-
-    public int smsFlage = 0;//0:设置为初始化值 1：请求获取验证码 2：提交用户输入的验证码判断是否正确
 
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void init() {
         setContentView(R.layout.activity_main);
-        initKey();
-        initSMS();
-
-        initView();
         persenter = new MainPersenterImpl(this, this);
 
+        initKey();
+        initSMS();
+        initView();
         initLeftFragment();
         initRecyclerView();
+        RxBusEvent();
+
+    }
+
+    private void RxBusEvent() {
+        RxBus.getInstance()
+                .tObservable(String.class)
+//                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        Log.e("SMSmsg", s);
+                        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+
+                    }
+                });
+        RxBus.getInstance()
+                .tObservable(DismissDialogEvent.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<DismissDialogEvent>() {
+                    @Override
+                    public void accept(DismissDialogEvent dismissDialogEvent) throws Exception {
+                        dismissProgressDialog();
+                    }
+                });
     }
 
     private void initKey() {
@@ -91,75 +116,19 @@ public class MainActivity extends BaseActivity implements MainView, View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SMSSDK.unregisterEventHandler(eventHandler);
+        persenter.unregristSMS();
     }
 
     private void initSMS() {
-//        SMSSDK.setAskPermisionOnReadContact(boolShowInDialog)
-
-        // 创建EventHandler对象
-        eventHandler = new EventHandler() {
-            public void afterEvent(int event, int result, Object data) {
-                if (data instanceof Throwable) {
-                    Throwable throwable = (Throwable) data;
-                    String msg = throwable.getMessage();
-//                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                } else {
-                    if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                        //回调完成
-                        if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                            //提交验证码成功
-                            RxBus.getInstance().send("提交验证码成功");
-                            //执行注册
-
-
-                        } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                            //获取验证码成功
-                            RxBus.getInstance().send("获取验证码成功");
-                        } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
-                            //返回支持发送验证码的国家列表
-                        }
-                    }else {
-                        ((Throwable) data).printStackTrace();
-                        //此语句代表接口返回失败
-                        //获取验证码失败。短信验证码验证失败（用flage标记来判断）
-                        if (smsFlage==1) {
-                            RxBus.getInstance().send("获取验证码失败,请填写正确的手机号码");
-                        }else if (smsFlage==2){
-                            RxBus.getInstance().send("验证码错误");
-                        }
-                    }
-                }
-            }
-        };
-
-        // 注册监听器
-        SMSSDK.registerEventHandler(eventHandler);
+        persenter.initSMS();
     }
 
     private void initLeftFragment() {
-        //判断是否登录，显示不同fragment
-        String uname = (String) SPUtils.getParam(this, "uname", "");
-        if (uname != null && !uname.equals("")) {
-            CarDTO carDTO = new CarDTO();
-            UserDTO userDTO = new UserDTO();
-            carDTO.setCname((String) SPUtils.getParam(this, "cname", ""));
-            carDTO.setCtype((String) SPUtils.getParam(this, "ctype", ""));
-            carDTO.setCproduct((String) SPUtils.getParam(this, "cproduct", ""));
-            carDTO.setCdisplacement((String) SPUtils.getParam(this, "cdisplacement", ""));
-            userDTO.setCarDTO(carDTO);
-            userDTO.setUname(uname);
+        BaseFragment fragment = persenter.initLeftFragment();
+        transaction.add(R.id.fl_left, fragment);
+        transaction.show(fragment);
+        transaction.commit();
 
-            UserFragment userFragment = new UserFragment(userDTO);
-            transaction.add(R.id.fl_left, userFragment, "user");
-            transaction.show(userFragment);
-            transaction.commit();
-        } else {
-            LoginFragment loginFragment = new LoginFragment();
-            transaction.add(R.id.fl_left, loginFragment, "login");
-            transaction.show(loginFragment);
-            transaction.commit();
-        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -173,20 +142,6 @@ public class MainActivity extends BaseActivity implements MainView, View.OnClick
 
         btn_left_menu.setOnClickListener(this);
         btn_query.setOnClickListener(this);
-
-
-        RxBus.getInstance()
-                .tObservable(String.class)
-//                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        Log.e("rxbus",s.toString());
-                        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-                    }
-                });
-
 
     }
 

@@ -8,7 +8,9 @@ public interface InsertUserPersenter {
 
     void switchLoginFragment();
 
-    void regist();
+    void checkSMSCode();
 
-    void sendSmsCode();
+    void sendSMSCode();
+
+    void regist();
 }

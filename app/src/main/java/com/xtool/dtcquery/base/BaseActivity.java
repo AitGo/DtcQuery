@@ -17,7 +17,7 @@ import com.xtool.dtcquery.widget.ProgressDialog;
 
 public abstract class BaseActivity extends FragmentActivity implements BaseView {
 
-    private ProgressDialog progressDialog;
+    public static ProgressDialog progressDialog;
     public FragmentManager fragmentManager;
     public FragmentTransaction transaction;
 
