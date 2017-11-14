@@ -1,5 +1,6 @@
 package com.xtool.dtcquery.mvp.model;
 
+import com.xtool.dtcquery.base.BaseModelImpl;
 import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.http.PostActivation;
 import com.xtool.dtcquery.http.ServiceFactory;
@@ -12,7 +13,7 @@ import io.reactivex.Observable;
  * Created by xtool on 2017/9/14.
  */
 
-public class LoginModelImpl implements LoginModel {
+public class LoginModelImpl extends BaseModelImpl implements LoginModel {
 
     @Override
     public Observable<List<UserDTO>> GetUserCustomByPost(UserDTO userDTO) {

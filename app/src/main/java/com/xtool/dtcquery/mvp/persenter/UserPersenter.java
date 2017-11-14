@@ -11,4 +11,6 @@ public interface UserPersenter {
     void switchToEditPassword();
 
     void switchToEditUserInfo();
+
+    void initData();
 }

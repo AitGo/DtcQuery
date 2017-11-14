@@ -40,6 +40,7 @@ public class EditUserInfoPersenterImpl implements EditUserInfoPersenter {
         UserDTO userDTO = view.getUserDTO();
 
         CarDTO carDTO = view.getCarDTO();
+        userDTO.setCarDTO(carDTO);
 
         model.editUserInfoByPost(userDTO)
                 .subscribeOn(Schedulers.io())
@@ -48,6 +49,11 @@ public class EditUserInfoPersenterImpl implements EditUserInfoPersenter {
                     @Override
                     public void onNext(@NonNull List<UserDTO> userDTOs) {
                         view.switchFragment(new UserFragment(userDTOs.get(0)));
+                        model.setParamToSP(context,"uname",userDTOs.get(0).getUname());
+                        model.setParamToSP(context,"cname",userDTOs.get(0).getCarDTO().getCname());
+                        model.setParamToSP(context,"ctype",userDTOs.get(0).getCarDTO().getCtype());
+                        model.setParamToSP(context,"cproduct",userDTOs.get(0).getCarDTO().getCproduct());
+                        model.setParamToSP(context,"cdisplacement",userDTOs.get(0).getCarDTO().getCdisplacement());
                         view.dismissProgressDialog();
                         view.showToast(context.getString(R.string.edit_success));
                     }
@@ -71,4 +77,5 @@ public class EditUserInfoPersenterImpl implements EditUserInfoPersenter {
     public void switchToUserFragment() {
         view.switchFragment(new UserFragment());
     }
+
 }

@@ -9,4 +9,6 @@ public interface EditUserInfoPersenter {
     void editUserInfo();
 
     void switchToUserFragment();
+
+
 }

@@ -142,7 +142,7 @@ public class MainPersenterImpl implements MainPersenter {
         // 创建EventHandler对象
         eventHandler = new EventHandler() {
             public void afterEvent(int event, int result, Object data) {
-                if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                if (result == SMSSDK.RESULT_COMPLETE) {
                     //回调完成
                     if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                         //提交验证码成功
@@ -157,10 +157,10 @@ public class MainPersenterImpl implements MainPersenter {
                         //返回支持发送验证码的国家列表
                     }
                 } else {
-                    ((Throwable) data).printStackTrace();
                     //此语句代表接口返回失败
                     RxBus.getInstance().send(context.getString(R.string.submit_smscode_fail));
                     RxBus.getInstance().send(new DismissDialogEvent());
+                    ((Throwable) data).printStackTrace();
                 }
             }
         };
@@ -177,14 +177,14 @@ public class MainPersenterImpl implements MainPersenter {
     public BaseFragment initLeftFragment() {
         BaseFragment fragment;
         //判断是否登录，显示不同fragment
-        String uname = (String) SPUtils.getParam(context, "uname", "");
+        String uname = model.getParamFromSP(context,"uname");
         if (uname != null && !uname.equals("")) {
             CarDTO carDTO = new CarDTO();
             UserDTO userDTO = new UserDTO();
-            carDTO.setCname((String) SPUtils.getParam(context, "cname", ""));
-            carDTO.setCtype((String) SPUtils.getParam(context, "ctype", ""));
-            carDTO.setCproduct((String) SPUtils.getParam(context, "cproduct", ""));
-            carDTO.setCdisplacement((String) SPUtils.getParam(context, "cdisplacement", ""));
+            carDTO.setCname(model.getParamFromSP(context,"cname"));
+            carDTO.setCtype(model.getParamFromSP(context,"ctype"));
+            carDTO.setCproduct(model.getParamFromSP(context,"cproduct"));
+            carDTO.setCdisplacement(model.getParamFromSP(context,"cdisplacement"));
             userDTO.setCarDTO(carDTO);
             userDTO.setUname(uname);
 

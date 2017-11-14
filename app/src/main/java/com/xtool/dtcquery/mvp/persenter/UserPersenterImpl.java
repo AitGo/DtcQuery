@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.entity.UserDTO;
-import com.xtool.dtcquery.mvp.model.LogoutModel;
-import com.xtool.dtcquery.mvp.model.LogoutModelImpl;
+import com.xtool.dtcquery.mvp.model.UserModel;
+import com.xtool.dtcquery.mvp.model.UserModelImpl;
 import com.xtool.dtcquery.mvp.view.EditPasswordFragment;
 import com.xtool.dtcquery.mvp.view.EditUserInfoFragment;
 import com.xtool.dtcquery.mvp.view.LoginFragment;
@@ -27,13 +27,13 @@ public class UserPersenterImpl implements UserPersenter {
 
     private UserView view;
     private Context context;
-    private LogoutModel logoutModel;
+    private UserModel model;
 
 
     public UserPersenterImpl(Context context, UserView view) {
         this.view = view;
         this.context = context;
-        logoutModel = new LogoutModelImpl();
+        model = new UserModelImpl();
     }
 
     private UserDTO getUser() {
@@ -47,18 +47,18 @@ public class UserPersenterImpl implements UserPersenter {
     public void logout() {
         view.showProgressDialog();
         //访问接口，改变登录状态
-        logoutModel.userLogoutByPost(getUser())
+        model.userLogoutByPost(getUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<List<UserDTO>>() {
                     @Override
                     public void onNext(@NonNull List<UserDTO> list) {
                         //修改缓存
-                        SPUtils.setParam(context, "uname", "");
-                        SPUtils.setParam(context, "cname", "");
-                        SPUtils.setParam(context, "ctype", "");
-                        SPUtils.setParam(context, "cproduct", "");
-                        SPUtils.setParam(context, "cdisplacement", "");
+                        model.setParamToSP(context,"uname","");
+                        model.setParamToSP(context,"cname","");
+                        model.setParamToSP(context,"ctype","");
+                        model.setParamToSP(context,"cproduct","");
+                        model.setParamToSP(context,"cdisplacement","");
                         //成功后切换界面
                         view.switchFragment(new LoginFragment());
                         view.dismissProgressDialog();
@@ -86,6 +86,15 @@ public class UserPersenterImpl implements UserPersenter {
     @Override
     public void switchToEditUserInfo() {
         view.switchFragment(new EditUserInfoFragment(view.getUser()));
+    }
+
+    @Override
+    public void initData() {
+        view.setUnameText(model.getParamFromSP(context,"uname"));
+        view.setCnameText(model.getParamFromSP(context,"cname"));
+        view.setCtypeText(model.getParamFromSP(context,"ctype"));
+        view.setCproductText(model.getParamFromSP(context,"cproduct"));
+        view.setCdisplacementText(model.getParamFromSP(context,"cdisplacement"));
     }
 
 

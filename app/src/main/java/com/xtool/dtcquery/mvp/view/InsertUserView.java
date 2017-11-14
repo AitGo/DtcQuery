@@ -26,4 +26,6 @@ public interface InsertUserView extends BaseFragmentView{
 
     void startCountDownTimer();
 
+    void finishCountDownTimer();
+
 }

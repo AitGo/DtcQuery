@@ -77,6 +77,7 @@ public class InsertUserPersenterImpl implements InsertUserPersenter {
                         @Override
                         public void onNext(@NonNull List<UserDTO> userDTOs) {
                             view.showToast(context.getString(R.string.regist_success));
+                            view.finishCountDownTimer();
                             switchLoginFragment();
                             view.dismissProgressDialog();
                         }

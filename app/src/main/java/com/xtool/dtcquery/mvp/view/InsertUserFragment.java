@@ -78,6 +78,7 @@ public class InsertUserFragment extends BaseFragment implements InsertUserView,V
                 persenter.checkSMSCode();
                 break;
             case R.id.btn_cancel:
+                finishCountDownTimer();
                 persenter.switchLoginFragment();
                 break;
             case R.id.btn_sendcode:
@@ -151,5 +152,10 @@ public class InsertUserFragment extends BaseFragment implements InsertUserView,V
     @Override
     public void startCountDownTimer() {
         myCountDownTimer.start();
+    }
+
+    @Override
+    public void finishCountDownTimer() {
+        myCountDownTimer.cancel();
     }
 }

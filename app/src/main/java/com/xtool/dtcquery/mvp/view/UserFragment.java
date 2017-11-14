@@ -62,11 +62,12 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
     }
 
     private void initData() {
-        tv_uname.setText((String) SPUtils.getParam(getContext(),"uname",""));
-        tv_cname.setText((String) SPUtils.getParam(getContext(),"cname",""));
-        tv_ctype.setText((String) SPUtils.getParam(getContext(),"ctype",""));
-        tv_cproduct.setText((String) SPUtils.getParam(getContext(),"cproduct",""));
-        tv_cdisplacement.setText((String) SPUtils.getParam(getContext(),"cdisplacement",""));
+//        tv_uname.setText((String) SPUtils.getParam(getContext(),"uname",""));
+//        tv_cname.setText((String) SPUtils.getParam(getContext(),"cname",""));
+//        tv_ctype.setText((String) SPUtils.getParam(getContext(),"ctype",""));
+//        tv_cproduct.setText((String) SPUtils.getParam(getContext(),"cproduct",""));
+//        tv_cdisplacement.setText((String) SPUtils.getParam(getContext(),"cdisplacement",""));
+        persenter.initData();
     }
 
     @Override
@@ -98,4 +99,31 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
         }
         return userDTO;
     }
+
+    @Override
+    public void setUnameText(String s) {
+        tv_uname.setText(s);
+    }
+
+    @Override
+    public void setCnameText(String s) {
+        tv_cname.setText(s);
+    }
+
+    @Override
+    public void setCtypeText(String s) {
+        tv_ctype.setText(s);
+    }
+
+    @Override
+    public void setCproductText(String s) {
+        tv_cproduct.setText(s);
+    }
+
+    @Override
+    public void setCdisplacementText(String s) {
+        tv_cdisplacement.setText(s);
+    }
+
+
 }

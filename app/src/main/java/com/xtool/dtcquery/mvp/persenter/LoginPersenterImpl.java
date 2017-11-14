@@ -44,7 +44,7 @@ public class LoginPersenterImpl implements LoginPersenter {
             view. showProgressDialog();
             String uname = view.getUname();
             String upassword = view.getUpassword();
-            UserDTO userDTO = new UserDTO();
+            final UserDTO userDTO = new UserDTO();
             userDTO.setUname(uname);
             userDTO.setUpassword(upassword);
             userDTO.setIslogin("login");
@@ -56,17 +56,17 @@ public class LoginPersenterImpl implements LoginPersenter {
                         public void onNext(@NonNull List<UserDTO> userDTOs) {
                             Log.e(TAG,"onNext");
                             //缓存user信息
-                            SPUtils.setParam(context,"uname",userDTOs.get(0).getUname());
+                            model.setParamToSP(context,"uname",userDTOs.get(0).getUname());
                             if(userDTOs.get(0).getCarDTO() != null) {
-                                SPUtils.setParam(context,"cname",userDTOs.get(0).getCarDTO().getCname());
-                                SPUtils.setParam(context,"ctype",userDTOs.get(0).getCarDTO().getCtype());
-                                SPUtils.setParam(context,"cproduct",userDTOs.get(0).getCarDTO().getCproduct());
-                                SPUtils.setParam(context,"cdisplacement",userDTOs.get(0).getCarDTO().getCdisplacement());
+                                model.setParamToSP(context,"cname",userDTOs.get(0).getCarDTO().getCname());
+                                model.setParamToSP(context,"ctype",userDTOs.get(0).getCarDTO().getCtype());
+                                model.setParamToSP(context,"cproduct",userDTOs.get(0).getCarDTO().getCproduct());
+                                model.setParamToSP(context,"cdisplacement",userDTOs.get(0).getCarDTO().getCdisplacement());
                             }else {
-                                SPUtils.setParam(context,"cname","");
-                                SPUtils.setParam(context,"ctype","");
-                                SPUtils.setParam(context,"cproduct","");
-                                SPUtils.setParam(context,"cdisplacement","");
+                                model.setParamToSP(context,"cname","");
+                                model.setParamToSP(context,"ctype","");
+                                model.setParamToSP(context,"cproduct","");
+                                model.setParamToSP(context,"cdisplacement","");
                             }
 
                             view.switchUserFragment(userDTOs.get(0));
