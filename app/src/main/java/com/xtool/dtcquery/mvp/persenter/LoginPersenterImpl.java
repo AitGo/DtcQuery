@@ -12,8 +12,12 @@ import com.xtool.dtcquery.mvp.view.InsertUserFragment;
 import com.xtool.dtcquery.mvp.view.LoginView;
 import com.xtool.dtcquery.utils.SPUtils;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
@@ -55,6 +59,10 @@ public class LoginPersenterImpl implements LoginPersenter {
                         @Override
                         public void onNext(@NonNull List<UserDTO> userDTOs) {
                             Log.e(TAG,"onNext");
+                            Set<String> tags = new HashSet<String>();
+                            tags.add("login");
+                            JPushInterface.setTags(context,1, tags);
+                            JPushInterface.setAlias(context,1,userDTOs.get(0).getUid()+"");
                             //缓存user信息
                             model.setParamToSP(context,"uname",userDTOs.get(0).getUname());
                             if(userDTOs.get(0).getCarDTO() != null) {

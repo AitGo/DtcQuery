@@ -1,8 +1,15 @@
 package com.xtool.dtcquery.mvp.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -22,28 +30,22 @@ import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.adapter.BrvahDtcRecyclerAdapter;
 import com.xtool.dtcquery.base.BaseActivity;
 import com.xtool.dtcquery.base.BaseFragment;
-import com.xtool.dtcquery.entity.CarDTO;
 import com.xtool.dtcquery.entity.DismissDialogEvent;
 import com.xtool.dtcquery.entity.Key;
-import com.xtool.dtcquery.entity.SubCategory;
-import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.persenter.InsertUserPersenter;
-import com.xtool.dtcquery.mvp.persenter.InsertUserPersenterImpl;
 import com.xtool.dtcquery.mvp.persenter.MainPersenter;
 import com.xtool.dtcquery.mvp.persenter.MainPersenterImpl;
 import com.xtool.dtcquery.utils.RSAUtils;
 import com.xtool.dtcquery.utils.RxBus;
-import com.xtool.dtcquery.utils.SPUtils;
 import com.xtool.dtcquery.widget.DividerGridItemDecoration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
-import io.reactivex.Scheduler;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -70,14 +72,31 @@ public class MainActivity extends BaseActivity implements MainView, View.OnClick
     public void init() {
         setContentView(R.layout.activity_main);
         persenter = new MainPersenterImpl(this, this);
-
+        initJPush();
         initKey();
         initSMS();
         initView();
         initLeftFragment();
         initRecyclerView();
         RxBusEvent();
+    }
 
+    private void initJPush() {
+        JPushInterface.init(getApplicationContext());
+//        Set<String> tags = new HashSet<String>();
+//        tags.add(persenter.checkLogin() ? "login" : "logout");
+//        JPushInterface.setTags(this,1, tags);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        persenter.unregristSMS();
     }
 
     private void RxBusEvent() {
@@ -88,9 +107,7 @@ public class MainActivity extends BaseActivity implements MainView, View.OnClick
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        Log.e("SMSmsg", s);
                         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-
                     }
                 });
         RxBus.getInstance()
@@ -111,12 +128,6 @@ public class MainActivity extends BaseActivity implements MainView, View.OnClick
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        persenter.unregristSMS();
     }
 
     private void initSMS() {
@@ -161,7 +172,6 @@ public class MainActivity extends BaseActivity implements MainView, View.OnClick
         mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override

@@ -21,4 +21,6 @@ public interface MainPersenter {
     void unregristSMS();
 
     BaseFragment initLeftFragment();
+
+    boolean checkLogin();
 }

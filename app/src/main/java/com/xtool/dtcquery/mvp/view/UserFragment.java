@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.base.BaseFragment;
 import com.xtool.dtcquery.entity.CarDTO;
@@ -13,6 +15,8 @@ import com.xtool.dtcquery.entity.UserDTO;
 import com.xtool.dtcquery.mvp.persenter.UserPersenter;
 import com.xtool.dtcquery.mvp.persenter.UserPersenterImpl;
 import com.xtool.dtcquery.utils.SPUtils;
+
+import java.util.List;
 
 /**
  * Created by xtool on 2017/9/14.
@@ -55,19 +59,14 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
         btn_logout.setOnClickListener(this);
         btn_editpassword.setOnClickListener(this);
         btn_eidtuser.setOnClickListener(this);
-
         persenter = new UserPersenterImpl(getContext(),this);
         initData();
         return inflate;
     }
 
     private void initData() {
-//        tv_uname.setText((String) SPUtils.getParam(getContext(),"uname",""));
-//        tv_cname.setText((String) SPUtils.getParam(getContext(),"cname",""));
-//        tv_ctype.setText((String) SPUtils.getParam(getContext(),"ctype",""));
-//        tv_cproduct.setText((String) SPUtils.getParam(getContext(),"cproduct",""));
-//        tv_cdisplacement.setText((String) SPUtils.getParam(getContext(),"cdisplacement",""));
         persenter.initData();
+        ((MainActivity)getActivity()).getDtcList();
     }
 
     @Override
@@ -87,17 +86,7 @@ public class UserFragment extends BaseFragment implements UserView, View.OnClick
 
     @Override
     public UserDTO getUser() {
-        if(userDTO == null) {
-            userDTO = new UserDTO();
-            CarDTO carDTO = new CarDTO();
-            carDTO.setCname((String) SPUtils.getParam(getContext(),"cname",""));
-            carDTO.setCtype((String) SPUtils.getParam(getContext(),"ctype",""));
-            carDTO.setCproduct((String) SPUtils.getParam(getContext(),"cproduct",""));
-            carDTO.setCdisplacement((String) SPUtils.getParam(getContext(),"cdisplacement",""));
-            userDTO.setCarDTO(carDTO);
-            userDTO.setUname((String) SPUtils.getParam(getContext(),"uname",""));
-        }
-        return userDTO;
+        return persenter.getUserDTO(userDTO);
     }
 
     @Override

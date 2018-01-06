@@ -196,6 +196,16 @@ public class MainPersenterImpl implements MainPersenter {
         return fragment;
     }
 
+    @Override
+    public boolean checkLogin() {
+        String uname = model.getParamFromSP(context,"uname");
+        if(uname == null || uname.equals("")) {
+            return false;
+        }else {
+            return true;
+        }
+    }
+
     private DtcDTO setDcodeToDtcCustom(String dcode, Integer s, Integer ps) {
 
         DtcDTO dtcDTO = new DtcDTO();

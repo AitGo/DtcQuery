@@ -1,6 +1,7 @@
 package com.xtool.dtcquery.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
