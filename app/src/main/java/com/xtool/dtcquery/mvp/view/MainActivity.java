@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.nineoldandroids.view.ViewHelper;
 import com.xtool.dtcquery.R;
 import com.xtool.dtcquery.adapter.BrvahDtcRecyclerAdapter;
 import com.xtool.dtcquery.base.BaseActivity;
@@ -153,10 +154,45 @@ public class MainActivity extends BaseActivity implements MainView, View.OnClick
 
         btn_left_menu.setOnClickListener(this);
         btn_query.setOnClickListener(this);
+        dl_left.setDrawerListener(listen);
 
     }
 
-    private void initRecyclerView() {
+    DrawerLayout.DrawerListener listen = new DrawerLayout.DrawerListener() {
+
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            View mContent = dl_left.getChildAt(0);
+            View mMenu = drawerView;
+            float scale = 1 - slideOffset;
+            //改变DrawLayout侧栏透明度，若不需要效果可以不设置
+            ViewHelper.setAlpha(mMenu, 0.6f + 0.4f * (1 - scale));
+            ViewHelper.setTranslationX(mContent,
+                    mMenu.getMeasuredWidth() * (1 - scale));
+            ViewHelper.setPivotX(mContent, 0);
+            ViewHelper.setPivotY(mContent, mContent.getMeasuredHeight() / 2);
+            mContent.invalidate();
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+
+        }
+    };
+
+
+        private void initRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerGridItemDecoration(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
